@@ -81,8 +81,8 @@ merged_filfile=merged_${fil_to_process}channels_${start_ux}.fil
 merged_fitsfile=merged_${fil_to_process}channels_${start_ux}.fits
 merged_candfile=merged_${fil_to_process}channels_${start_ux}.cand
 
-echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile}"
-merge_coarse_channels ${fil_merge_list} ${merged_filfile}
+echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -s -1"
+merge_coarse_channels ${fil_merge_list} ${merged_filfile} -s -1 
 
 # conversion to FITS file:
 echo "dumpfilfile ${merged_filfile} ${merged_fitsfile}"
