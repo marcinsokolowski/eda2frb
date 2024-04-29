@@ -87,6 +87,7 @@ fil_merge_list=`cat fil_list_all | head --lines=${fil_to_process} | awk '{printf
 merged_filfile=merged_${fil_to_process}channels_${start_ux}.fil
 merged_fitsfile=merged_${fil_to_process}channels_${start_ux}.fits
 merged_candfile=merged_${fil_to_process}channels_${start_ux}.cand
+merged_candidates=merged_${fil_to_process}channels_${start_ux}_merged.cand
 
 echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -s -1"
 merge_coarse_channels ${fil_merge_list} ${merged_filfile} -s -1 
@@ -101,6 +102,10 @@ dumpfilfile ${merged_filfile} ${merged_fitsfile}
 echo "/usr/local/bin//cudafdmt ${merged_filfile} -t 512 -d 2048 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile}"
 /usr/local/bin//cudafdmt ${merged_filfile} -t 512 -d 2048 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile}
 
+# merge candidates 
+path=`which my_friends_of_friends.py`
+echo "python $path ${merged_candfile} --outfile=${merged_candidates}"
+python $path ${merged_candfile} --outfile=${merged_candidates}
 
 # TODO:
 # visualisation of candidates etc 
