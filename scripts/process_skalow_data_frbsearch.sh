@@ -18,11 +18,18 @@ if [[ $scrunch_factor -le 1 ]]; then
    filterbank_dir=filterbank
 fi
 
+digifil_options=""
+if [[ -n "$3" && "$3" != "-" ]]; then
+   digifil_options=$3
+fi
+
+
 echo "#############################################"
 echo "PARAMETERS:"
 echo "dada_files_path = $dada_files_path"
 echo "scrunch_factor  = $scrunch_factor"
 echo "filterbank_dir  = $filterbank_dir"
+echo "digifil_options = $digifil_options"
 echo "#############################################"
 
 
@@ -53,8 +60,8 @@ do
       echo "INFO : filterbank file ${filterbank_dir}/${fil_file} - already exists -> skipped"
    else
       if [[ $scrunch_factor -gt 1 ]]; then
-         echo "digifil -t ${scrunch_factor} -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8"
-         digifil -t ${scrunch_factor} -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8
+         echo "digifil -t ${scrunch_factor} -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 ${digifil_options}"
+         digifil -t ${scrunch_factor} -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 ${digifil_options}
       else
          echo "digifil -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8"
          digifil -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8
