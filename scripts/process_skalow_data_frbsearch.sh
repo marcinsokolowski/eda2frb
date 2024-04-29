@@ -60,11 +60,11 @@ do
       echo "INFO : filterbank file ${filterbank_dir}/${fil_file} - already exists -> skipped"
    else
       if [[ $scrunch_factor -gt 1 ]]; then
-         echo "digifil -t ${scrunch_factor} -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 ${digifil_options}"
-         digifil -t ${scrunch_factor} -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 ${digifil_options}
+         echo "digifil -t ${scrunch_factor} -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 -d 1 ${digifil_options}"
+         digifil -t ${scrunch_factor} -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 -d 1 ${digifil_options}
       else
-         echo "digifil -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8"
-         digifil -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8
+         echo "digifil -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 -d 1"
+         digifil -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 -d 1 
       fi
   fi
   
