@@ -40,6 +40,13 @@ if [[ ! -d ${dada_files_path} ]]; then
 fi
 
 cd ${dada_files_path}
+if [[ -s done.txt ]]; then
+   echo "WARNING : the processing was already performed and finished at:"
+   cat done.txt
+   echo "WARNING : exiting the script now"
+   exit;
+fi
+
 mkdir -p ${filterbank_dir}
 
 # digifil -t 1000 -o filterbank_1ms/channel_57_1_1713782313.693404.fil channel_57_1_1713782313.693404.dada -b 8
@@ -109,3 +116,8 @@ python $path ${merged_candfile} --outfile=${merged_candidates}
 
 # TODO:
 # visualisation of candidates etc 
+
+
+# end of processing 
+cd ${dada_files_path}
+date > done.txt
