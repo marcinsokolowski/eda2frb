@@ -99,9 +99,9 @@ merged_candidates=merged_${fil_to_process}channels_${start_ux}_merged.cand
 echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -s -1"
 merge_coarse_channels ${fil_merge_list} ${merged_filfile} -s -1 
 
-# conversion to FITS file:
-echo "dumpfilfile ${merged_filfile} ${merged_fitsfile}"
-dumpfilfile ${merged_filfile} ${merged_fitsfile}
+# conversion of merged FIL to FITS file:
+echo "dumpfilfile_float ${merged_filfile} ${merged_fitsfile}"
+dumpfilfile_float ${merged_filfile} ${merged_fitsfile}
 
 # compilation:
 # LAPTOP : ~/github/fredda/branches/main/fredda/src/cudafdmt
