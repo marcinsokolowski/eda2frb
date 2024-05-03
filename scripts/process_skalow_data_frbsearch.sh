@@ -23,6 +23,10 @@ if [[ -n "$3" && "$3" != "-" ]]; then
    digifil_options=$3
 fi
 
+merge_candidates=0
+if [[ -n "$4" && "$4" != "-" ]]; then
+   merge_candidates=$4
+fi
 
 echo "#############################################"
 echo "PARAMETERS:"
@@ -47,8 +51,19 @@ if [[ -s done.txt ]]; then
    exit;
 fi
 
-mkdir -p ${filterbank_dir}
+# check time of acquisition:
+start_ux=`ls channel_0_*.dada | cut -b 13-22`
+hour_local=`date -d "1970-01-01 UTC $start_ux seconds" +%H`
 
+if [[ $hour_local -ge 6 && $hour_local -le 17 ]]; then
+   echo "WARNING : daytime observation started at:"
+   date -d "1970-01-01 UTC $start_ux seconds" +"%Y-%m-%d %T"
+   
+   echo "WARNING : too much RFI -> FRB processing skipped"
+   exit;
+fi
+
+mkdir -p ${filterbank_dir}
 # digifil -t 1000 -o filterbank_1ms/channel_57_1_1713782313.693404.fil channel_57_1_1713782313.693404.dada -b 8
 start_ux=-1
 fil_count=0
@@ -110,13 +125,19 @@ echo "/usr/local/bin//cudafdmt ${merged_filfile} -t 512 -d 2048 -S 0 -r 1 -s 1 -
 /usr/local/bin//cudafdmt ${merged_filfile} -t 512 -d 2048 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile}
 
 # merge candidates 
-path=`which my_friends_of_friends.py`
-echo "python $path ${merged_candfile} --outfile=${merged_candidates}"
-python $path ${merged_candfile} --outfile=${merged_candidates}
+if [[ $merge_candidates -gt 0 ]]; then
+   path=`which my_friends_of_friends.py`
+   echo "python $path ${merged_candfile} --outfile=${merged_candidates}"
+   python $path ${merged_candfile} --outfile=${merged_candidates}
+else
+   echo "WARNING : merging of candidates is not required. If needed execute command:"
+   echo "python $path ${merged_candfile} --outfile=${merged_candidates}"
+fi   
 
 # TODO:
 # visualisation of candidates etc 
-
+# use ~/github/mwafrb/scripts/showcand_merged.sh 
+#                             create_cutouts_fits.sh
 
 # end of processing 
 cd ${dada_files_path}
