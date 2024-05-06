@@ -2,6 +2,8 @@
 
 # find . -name "*.dada" -exec dirname {} \; | sort -u
 
+export PATH=$MWA_FRB/scripts/:$PATH
+
 dada_files_path=/data/2024_04_22_pulsars/J0835-4510_flagants_90ch_ch230/230
 if [[ -n "$1" && "$1" != "-" ]]; then
    dada_files_path="$1"
@@ -27,6 +29,11 @@ merge_candidates=0
 if [[ -n "$4" && "$4" != "-" ]]; then
    merge_candidates=$4
 fi
+
+if [[ -n "$5" && "$5" != "-" ]]; then
+   filterbank_dir=$5
+fi
+
 
 echo "#############################################"
 echo "PARAMETERS:"
@@ -85,8 +92,8 @@ do
          echo "digifil -t ${scrunch_factor} -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 -d 1 ${digifil_options}"
          digifil -t ${scrunch_factor} -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 -d 1 ${digifil_options}
       else
-         echo "digifil -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 -d 1"
-         digifil -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 -d 1 
+         echo "digifil -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 -d 1 ${digifil_options}"
+         digifil -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 -d 1 ${digifil_options}
       fi
   fi
   
@@ -109,7 +116,7 @@ fil_merge_list=`cat fil_list_all | head --lines=${fil_to_process} | awk '{printf
 merged_filfile=merged_${fil_to_process}channels_${start_ux}.fil
 merged_fitsfile=merged_${fil_to_process}channels_${start_ux}.fits
 merged_candfile=merged_${fil_to_process}channels_${start_ux}.cand
-merged_candidates=merged_${fil_to_process}channels_${start_ux}_merged.cand
+merged_candidates=merged_${fil_to_process}channels_${start_ux}.cand_merged
 
 echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -s -1"
 merge_coarse_channels ${fil_merge_list} ${merged_filfile} -s -1 
@@ -124,9 +131,9 @@ dumpfilfile_float ${merged_filfile} ${merged_fitsfile}
 echo "/usr/local/bin//cudafdmt ${merged_filfile} -t 512 -d 2048 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile}"
 /usr/local/bin//cudafdmt ${merged_filfile} -t 512 -d 2048 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile}
 
+path=`which my_friends_of_friends.py`
 # merge candidates 
 if [[ $merge_candidates -gt 0 ]]; then
-   path=`which my_friends_of_friends.py`
    echo "python $path ${merged_candfile} --outfile=${merged_candidates}"
    python $path ${merged_candfile} --outfile=${merged_candidates}
 else
