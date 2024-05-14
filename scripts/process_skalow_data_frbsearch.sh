@@ -95,8 +95,17 @@ if [[ $hour_local -ge 6 && $hour_local -le 17 ]]; then
 fi
 
 # PULSAR:
-psrcat -e ${observed_object} > ${observed_object}.eph_full
-p0=`cat ${observed_object}.eph_full | grep P0 | awk '{if($1=="P0"){print $2;}}'`
+psrcat_path=`which psrcat`
+if [[ -n $psrcat_path ]]; then
+   echo "psrcat -e ${observed_object} > ${observed_object}.eph_full"
+   psrcat -e2 ${observed_object} > ${observed_object}.eph_full
+   p0=`cat ${observed_object}.eph_full | grep P0 | awk '{if($1=="P0"){print $2;}}'`
+   echo "DEBUG : p0 = $p0, taken from ${observed_object}.eph_full :"
+   cat ${observed_object}.eph_full
+else
+   echo "ERROR : psrcat not installed -> cannot continue"
+   exit;
+fi   
 
 mkdir -p ${filterbank_dir}
 # digifil -t 1000 -o filterbank_1ms/channel_57_1_1713782313.693404.fil channel_57_1_1713782313.693404.dada -b 8
