@@ -34,6 +34,16 @@ if [[ -n "$5" && "$5" != "-" ]]; then
    filterbank_dir=$5
 fi
 
+run_presto=1
+if [[ -n "$6" && "$6" != "-" ]]; then
+   run_presto=$6
+fi
+
+observed_object="J0835-4510"
+if [[ -n "$7" && "$7" != "-" ]]; then
+   observed_object="$7"
+fi
+
 
 echo "#############################################"
 echo "PARAMETERS:"
@@ -41,6 +51,8 @@ echo "dada_files_path = $dada_files_path"
 echo "scrunch_factor  = $scrunch_factor"
 echo "filterbank_dir  = $filterbank_dir"
 echo "digifil_options = $digifil_options"
+echo "run_presto      = $run_presto"
+echo "observed_object = $observed_object"
 echo "#############################################"
 
 
@@ -140,6 +152,13 @@ else
    echo "WARNING : merging of candidates is not required. If needed execute command:"
    echo "python $path ${merged_candfile} --outfile=${merged_candidates}"
 fi   
+
+if [[ $run_presto -gt 0 ]]; then   
+   echo "presto_fold.sh ${merged_filfile} ${observed_object} - - 16 0.00 \"-noxwin\""
+   presto_fold.sh ${merged_filfile} ${observed_object} - - 16 0.00 "-noxwin"
+else
+   echo "WARNING : running PRESTO is not required"
+fi
 
 # TODO:
 # visualisation of candidates etc 
