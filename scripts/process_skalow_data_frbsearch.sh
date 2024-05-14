@@ -117,7 +117,7 @@ do
    base_name=${dada_file%%.dada}
    start_ux_set=`echo $start_ux | awk '{if($1>0){print 1;}else{print 0;}}'`
    ch=`echo $dada_file | awk -F '_' '{ch=$2;ux=substr($4,1,17);print ch;}'`
-   channel_total=`echo "$channel $start_channel" | awk '{printf("%d\n",($1+$2));}'`
+   channel_total=`echo "$ch $start_channel" | awk '{printf("%d\n",($1+$2));}'`
    freq_mhz=`echo "$ch $start_channel" | awk '{printf("%.6f\n",($1+$2)*(400.00/512.00));}'`
    echo "INFO : processing dada_file = $dada_file -> ch=$ch, start_channel=$start_channel -> freq = $freq_mhz [MHz]"
    
