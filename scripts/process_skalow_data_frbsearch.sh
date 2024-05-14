@@ -44,6 +44,16 @@ if [[ -n "$7" && "$7" != "-" ]]; then
    observed_object="$7"
 fi
 
+use_digifil=0
+if [[ -n "$8" && "$8" != "-" ]]; then
+   use_digifil=$8
+fi
+
+pwd_path=`pwd`
+start_channel=`basename $pwd_path`
+if [[ -n "$9" && "$9" != "-" ]]; then
+   start_channel=$9
+fi
 
 echo "#############################################"
 echo "PARAMETERS:"
@@ -53,6 +63,8 @@ echo "filterbank_dir  = $filterbank_dir"
 echo "digifil_options = $digifil_options"
 echo "run_presto      = $run_presto"
 echo "observed_object = $observed_object"
+echo "use_digifil     = $use_digifil"
+echo "start_channel   = $start_channel"
 echo "#############################################"
 
 
@@ -82,6 +94,10 @@ if [[ $hour_local -ge 6 && $hour_local -le 17 ]]; then
    exit;
 fi
 
+# PULSAR:
+psrcat -e ${observed_object} > ${observed_object}.eph_full
+p0=`cat ${observed_object}.eph_full | grep P0 | awk '{if($1=="P0"){print $2;}}'`
+
 mkdir -p ${filterbank_dir}
 # digifil -t 1000 -o filterbank_1ms/channel_57_1_1713782313.693404.fil channel_57_1_1713782313.693404.dada -b 8
 start_ux=-1
@@ -91,6 +107,10 @@ do
    fil_file=${dada_file%%dada}fil
    base_name=${dada_file%%.dada}
    start_ux_set=`echo $start_ux | awk '{if($1>0){print 1;}else{print 0;}}'`
+   ch=`echo $dada_file | awk -F '_' '{ch=$2;ux=substr($4,1,17);print ch;}'`
+   channel_total=`echo "$channel $start_channel" | awk '{printf("%d\n",($1+$2));}'`
+   freq_mhz=`echo "$ch $start_channel" | awk '{printf("%.6f\n",($1+$2)*(400.00/512.00));}'`
+   echo "INFO : processing dada_file = $dada_file -> ch=$ch, start_channel=$start_channel -> freq = $freq_mhz [MHz]"
    
    if [[ $start_ux_set -le 0 ]]; then
       start_ux=`echo ${base_name} | awk '{print substr($1,length($1)-16);}'`
@@ -100,12 +120,19 @@ do
    if [[ -s ${filterbank_dir}/${fil_file} ]]; then
       echo "INFO : filterbank file ${filterbank_dir}/${fil_file} - already exists -> skipped"
    else
-      if [[ $scrunch_factor -gt 1 ]]; then
-         echo "digifil -t ${scrunch_factor} -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 -d 1 ${digifil_options}"
-         digifil -t ${scrunch_factor} -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 -d 1 ${digifil_options}
+      if [[ $use_digifil -gt 0 ]]; then
+         if [[ $scrunch_factor -gt 1 ]]; then
+            echo "digifil -t ${scrunch_factor} -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 -d 1 ${digifil_options}"
+            digifil -t ${scrunch_factor} -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 -d 1 ${digifil_options}
+         else
+            echo "digifil -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 -d 1 ${digifil_options}"
+            digifil -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 -d 1 ${digifil_options}
+         fi
       else
-         echo "digifil -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 -d 1 ${digifil_options}"
-         digifil -o ${filterbank_dir}/${fil_file} ${dada_file} -b 8 -d 1 ${digifil_options}
+         # use MSOK's conversion software: https://github.com/marcinsokolowski/skalow_station_data
+         # skalow_station_fold.sh /data/ 2024_05_01_pulsars 230 J0835-4510_flagants_70ch_ch230  1 1 - 16 0.089328385024 - - "-a 7 -b 1" - - - _16ch
+         echo "skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N 16 -O dynspec -a 7 -P ${p0} -D 2 -A ch${channel_total} -a 7 -b 1"
+         skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N 16 -O dynspec -a 7 -P ${p0} -D 2 -A ch${channel_total} -a 7 -b 1
       fi
   fi
   
