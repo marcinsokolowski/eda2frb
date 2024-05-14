@@ -140,8 +140,17 @@ do
       else
          # use MSOK's conversion software: https://github.com/marcinsokolowski/skalow_station_data
          # skalow_station_fold.sh /data/ 2024_05_01_pulsars 230 J0835-4510_flagants_70ch_ch230  1 1 - 16 0.089328385024 - - "-a 7 -b 1" - - - _16ch
+         cd ${filterbank_dir}/
+         pwd
+         echo "ln -sf ../${dada_file}"
+         ln -sf ../${dada_file}
          echo "skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N 16 -O dynspec -a 7 -P ${p0} -D 2 -A ch${channel_total} -a 7 -b 1"
          skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N 16 -O dynspec -a 7 -P ${p0} -D 2 -A ch${channel_total} -a 7 -b 1
+         
+         echo "ln -s ch${channel_total}/dynspec_avg7_i.fil ${fil_file}"
+         ln -s ch${channel_total}/dynspec_avg7_i.fil ${fil_file}
+         
+         cd ../
       fi
   fi
   
