@@ -68,11 +68,21 @@ echo "start_channel   = $start_channel"
 echo "#############################################"
 
 
-
+# check all requirements and dependencies:
 if [[ ! -d ${dada_files_path} ]]; then
    echo "ERROR : path $dada_files_path does not exist"
    exit
 fi
+
+skalow_spectrometer_path=`which skalow_spectrometer`
+if [[ $use_digifil -le 0 ]]; then
+   if [[ -n $skalow_spectrometer_path ]]; then
+      echo "OK : program skalow_spectrometer found at $skalow_spectrometer_path -> OK"
+   else
+      echo "ERROR : program skalow_spectrometer not found on path, install as described at https://github.com/marcinsokolowski/skalow_station_data"
+      exit -1
+   fi
+fi   
 
 cd ${dada_files_path}
 if [[ -s done.txt ]]; then
@@ -175,8 +185,8 @@ merged_fitsfile=merged_${fil_to_process}channels_${start_ux}.fits
 merged_candfile=merged_${fil_to_process}channels_${start_ux}.cand
 merged_candidates=merged_${fil_to_process}channels_${start_ux}.cand_merged
 
-echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -s -1"
-merge_coarse_channels ${fil_merge_list} ${merged_filfile} -s -1 
+echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -s -1 -o"
+merge_coarse_channels ${fil_merge_list} ${merged_filfile} -s -1 -o 
 
 # conversion of merged FIL to FITS file:
 echo "dumpfilfile_float ${merged_filfile} ${merged_fitsfile}"
@@ -213,3 +223,13 @@ fi
 # end of processing 
 cd ${dada_files_path}
 date > done.txt
+
+subdir=${merged_filfile%%.fil}
+echo "For viewing FREDDA FRB candidates use:"
+echo "showcand_merged.sh $merged_filfile 10"
+echo "or"
+echo "showcand_all.sh $subdir 10"
+echo "or"
+echo "cd $subdir"
+echo "showcand.sh FIL_FILE 10" 
+
