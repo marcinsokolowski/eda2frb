@@ -174,17 +174,22 @@ do
   fil_count=$(($fil_count+1))
 done
 
-div4=`echo ${fil_count} | awk '{print int($1/4);}'`
+cd ${filterbank_dir}
+# merging filterbank files from different coase frequency channels into one BIG file :
+# fil_merge_list=`ls *.fil | head --lines=${fil_to_process} | awk '{printf("%s,",$1);}'`
+ls channel_?_*.fil > fil_list_all_tmp
+ls channel_??_*.fil >> fil_list_all_tmp
+ls channel_???_*.fil >> fil_list_all_tmp
+all_count=`cat fil_list_all_tmp | wc -l`
+# ignore last 6 files:
+all_count_minus4=$(($all_count-6))
+head --lines=${all_count_minus4} fil_list_all_tmp > fil_list_all
+
+# div4=`echo ${fil_count} | awk '{print int($1/4);}'`
+div4=`echo ${all_count_minus4} | awk '{print int($1/4);}'`
 fil_to_process=$(($div4*4))
 echo "Total $fil_count filterbank files - FREDDA required divsion by 4 -> processing $fil_to_process files"
 
-cd ${filterbank_dir}
-
-# merging filterbank files from different coase frequency channels into one BIG file :
-# fil_merge_list=`ls *.fil | head --lines=${fil_to_process} | awk '{printf("%s,",$1);}'`
-ls channel_?_*.fil > fil_list_all
-ls channel_??_*.fil >> fil_list_all
-ls channel_???_*.fil >> fil_list_all
 fil_merge_list=`cat fil_list_all | head --lines=${fil_to_process} | awk '{printf("%s,",$1);}'`
 
 merged_filfile=merged_${fil_to_process}channels_${start_ux}.fil
