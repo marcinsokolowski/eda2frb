@@ -185,8 +185,9 @@ merged_fitsfile=merged_${fil_to_process}channels_${start_ux}.fits
 merged_candfile=merged_${fil_to_process}channels_${start_ux}.cand
 merged_candidates=merged_${fil_to_process}channels_${start_ux}.cand_merged
 
-echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -s -1 -o"
-merge_coarse_channels ${fil_merge_list} ${merged_filfile} -s -1 -o 
+# WARNING : for fredda it may required -s -1 !!!
+echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o"
+merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o 
 
 # conversion of merged FIL to FITS file:
 echo "dumpfilfile_float ${merged_filfile} ${merged_fitsfile}"

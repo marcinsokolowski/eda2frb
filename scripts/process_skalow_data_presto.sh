@@ -17,7 +17,7 @@ fi
 
 merged_filfile="merged_all_channels_oversampled.fil"
 if [[ $n_coarse_channels -lt 1000000 ]]; then
-   merged_filfile="merged_${n_coarse_channels}_channels.fil"
+   merged_filfile="merged_${n_coarse_channels}_channels_oversampled.fil"
 fi
 if [[ -n "$4" && "$4" != "-" ]]; then
    merged_filfile="$4"
@@ -37,14 +37,16 @@ echo "#####################################"
 echo "PARAMETERS:"
 echo "#####################################"
 echo "run_fredda = $run_fredda"
+echo "merged_filfile = $merged_filfile"
 echo "#####################################"
 
 
 ls $template > fil_list_all
 fil_merge_list=`cat fil_list_all | head --lines=${n_coarse_channels} | awk '{printf("%s,",$1);}'`
 
-echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -s -1 -o"
-merge_coarse_channels ${fil_merge_list} ${merged_filfile} -s -1 -o 
+# WARNING : for fredda it may required -s -1 !!!
+echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o"
+merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o 
 
 echo "presto_fold.sh ${merged_filfile} ${object} - - ${presto_subbands}"
 presto_fold.sh ${merged_filfile} ${object} - - ${presto_subbands}
