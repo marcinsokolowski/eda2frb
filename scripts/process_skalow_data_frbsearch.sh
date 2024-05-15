@@ -55,6 +55,12 @@ if [[ -n "$9" && "$9" != "-" ]]; then
    start_channel=$9
 fi
 
+n_fine_ch=32
+if [[ -n "${10}" && "${10}" != "-" ]]; then
+   n_fine_ch=${10}
+fi
+
+
 echo "#############################################"
 echo "PARAMETERS:"
 echo "dada_files_path = $dada_files_path"
@@ -65,6 +71,7 @@ echo "run_presto      = $run_presto"
 echo "observed_object = $observed_object"
 echo "use_digifil     = $use_digifil"
 echo "start_channel   = $start_channel"
+echo "n_fine_ch       = $n_fine_ch"
 echo "#############################################"
 
 
@@ -154,8 +161,8 @@ do
          pwd
          echo "ln -sf ../${dada_file}"
          ln -sf ../${dada_file}
-         echo "skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N 16 -O dynspec -a 7 -P ${p0} -D 2 -A ch${channel_total} -a 7 -b 1"
-         skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N 16 -O dynspec -a 7 -P ${p0} -D 2 -A ch${channel_total} -a 7 -b 1
+         echo "skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a 7 -P ${p0} -D 2 -A ch${channel_total} -a 7 -b 1"
+         skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a 7 -P ${p0} -D 2 -A ch${channel_total} -a 7 -b 1
          
          echo "ln -s ch${channel_total}/dynspec_avg7_i.fil ${fil_file}"
          ln -s ch${channel_total}/dynspec_avg7_i.fil ${fil_file}
