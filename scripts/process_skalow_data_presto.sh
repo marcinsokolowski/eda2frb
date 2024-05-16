@@ -23,7 +23,7 @@ if [[ -n "$4" && "$4" != "-" ]]; then
    merged_filfile="$4"
 fi
 
-presto_subbands=16
+presto_subbands=-1
 if [[ -n "$5" && "$5" != "-" ]]; then
    presto_subbands=$5
 fi
@@ -54,6 +54,15 @@ fil_merge_list=`cat fil_list_all | head --lines=${n_coarse_channels} | awk '{pri
 # WARNING : for fredda it may required -s -1 !!!
 echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o"
 merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o 
+
+# calculate subbands based on final number of channels in the merged file (merged_fine_channels.txt)
+if [[ $presto_subbands -lt 0 ]]; then
+   if [[ -s merged_fine_channels.txt ]]; then
+      presto_subbands=`cat merged_fine_channels.txt`
+   else
+      presto_subbands=16
+   fi   
+fi
 
 echo "presto_fold.sh ${merged_filfile} ${object} - - ${presto_subbands} - \"${presto_options}\""
 presto_fold.sh ${merged_filfile} ${object} - - ${presto_subbands} - "${presto_options}"
