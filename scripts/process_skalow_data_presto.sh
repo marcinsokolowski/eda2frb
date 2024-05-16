@@ -33,11 +33,18 @@ if [[ -n "$6" && "$6" != "-" ]]; then
    run_fredda=$6
 fi
 
+presto_options=""
+if [[ -n "$7" && "$7" != "-" ]]; then
+   presto_options="$7"
+fi
+
+
 echo "#####################################"
 echo "PARAMETERS:"
 echo "#####################################"
 echo "run_fredda = $run_fredda"
 echo "merged_filfile = $merged_filfile"
+echo "presto_options = $presto_options"
 echo "#####################################"
 
 
@@ -48,8 +55,8 @@ fil_merge_list=`cat fil_list_all | head --lines=${n_coarse_channels} | awk '{pri
 echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o"
 merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o 
 
-echo "presto_fold.sh ${merged_filfile} ${object} - - ${presto_subbands}"
-presto_fold.sh ${merged_filfile} ${object} - - ${presto_subbands}
+echo "presto_fold.sh ${merged_filfile} ${object} - - ${presto_subbands} - \"${presto_options}\""
+presto_fold.sh ${merged_filfile} ${object} - - ${presto_subbands} - "${presto_options}"
 
 if [[ $run_fredda -gt 0 ]]; then
    # compilation:

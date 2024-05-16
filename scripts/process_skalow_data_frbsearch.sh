@@ -177,9 +177,9 @@ done
 cd ${filterbank_dir}
 # merging filterbank files from different coase frequency channels into one BIG file :
 # fil_merge_list=`ls *.fil | head --lines=${fil_to_process} | awk '{printf("%s,",$1);}'`
-ls channel_?_*.fil > fil_list_all_tmp
-ls channel_??_*.fil >> fil_list_all_tmp
-ls channel_???_*.fil >> fil_list_all_tmp
+ls channel_?_?_*.fil > fil_list_all_tmp
+ls channel_??_?_*.fil >> fil_list_all_tmp
+ls channel_???_?_*.fil >> fil_list_all_tmp
 all_count=`cat fil_list_all_tmp | wc -l`
 # ignore last 6 files:
 all_count_minus4=$(($all_count-6))
