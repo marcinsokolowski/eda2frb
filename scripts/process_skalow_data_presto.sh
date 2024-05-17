@@ -52,8 +52,8 @@ ls $template > fil_list_all
 fil_merge_list=`cat fil_list_all | head --lines=${n_coarse_channels} | awk '{printf("%s,",$1);}'`
 
 # WARNING : for fredda it may required -s -1 !!!
-echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o"
-merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o 
+echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o -F"
+merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o -F
 
 # calculate subbands based on final number of channels in the merged file (merged_fine_channels.txt)
 if [[ $presto_subbands -lt 0 ]]; then

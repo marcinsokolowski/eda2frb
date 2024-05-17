@@ -186,11 +186,13 @@ all_count_minus4=$(($all_count-6))
 head --lines=${all_count_minus4} fil_list_all_tmp > fil_list_all
 
 # div4=`echo ${fil_count} | awk '{print int($1/4);}'`
-div4=`echo ${all_count_minus4} | awk '{print int($1/4);}'`
-fil_to_process=$(($div4*4))
-echo "Total $fil_count filterbank files - FREDDA required divsion by 4 -> processing $fil_to_process files"
+# div4=`echo ${all_count_minus4} | awk '{print int($1/4);}'`
+# fil_to_process=$(($div4*4))
+# echo "Total $fil_count filterbank files - FREDDA required divsion by 4 -> processing $fil_to_process files"
 
-fil_merge_list=`cat fil_list_all | head --lines=${fil_to_process} | awk '{printf("%s,",$1);}'`
+# fil_merge_list=`cat fil_list_all | head --lines=${fil_to_process} | awk '{printf("%s,",$1);}'`
+# max 59 coarse channels to end up with 768 fine channels (divides by 128)
+fil_merge_list=`cat fil_list_all | head --lines=59 | awk '{printf("%s,",$1);}'`
 
 merged_filfile=merged_${fil_to_process}channels_${start_ux}.fil
 merged_fitsfile=merged_${fil_to_process}channels_${start_ux}.fits
@@ -198,8 +200,8 @@ merged_candfile=merged_${fil_to_process}channels_${start_ux}.cand
 merged_candidates=merged_${fil_to_process}channels_${start_ux}.cand_merged
 
 # WARNING : for fredda it may required -s -1 !!!
-echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o"
-merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o 
+echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o -F"
+merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o -F
 
 # conversion of merged FIL to FITS file:
 echo "dumpfilfile_float ${merged_filfile} ${merged_fitsfile}"
