@@ -38,6 +38,16 @@ if [[ -n "$7" && "$7" != "-" ]]; then
    presto_options="$7"
 fi
 
+merge_options=""
+if [[ -n "$8" && "$8" != "-" ]]; then
+   merge_options="$8"
+fi
+
+pwd_path=`pwd`
+start_channel=`basename $pwd_path`
+if [[ -n "$9" && "$9" != "-" ]]; then
+   start_channel=$9
+fi
 
 echo "#####################################"
 echo "PARAMETERS:"
@@ -45,6 +55,8 @@ echo "#####################################"
 echo "run_fredda = $run_fredda"
 echo "merged_filfile = $merged_filfile"
 echo "presto_options = $presto_options"
+echo "merge_options  = $merge_options"
+echo "start_channel  = $start_channel"
 echo "#####################################"
 
 
@@ -56,8 +68,8 @@ fredda_options=""
 if [[ $run_fredda -gt 0 ]]; then
    fredda_options=" -F"
 fi
-echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o ${fredda_options}"
-merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o ${fredda_options}
+echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o ${fredda_options} -S -C ${start_channel} ${merge_options}"
+merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o ${fredda_options} -S -C ${start_channel} ${merge_options}
 
 # calculate subbands based on final number of channels in the merged file (merged_fine_channels.txt)
 if [[ $presto_subbands -lt 0 ]]; then

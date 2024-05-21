@@ -55,10 +55,11 @@ if [[ -n "$9" && "$9" != "-" ]]; then
    start_channel=$9
 fi
 
-n_fine_ch=32
-if [[ -n "${10}" && "${10}" != "-" ]]; then
-   n_fine_ch=${10}
-fi
+# use 64 fine channels as the current merge is optimised and hardcoded for this number. Could also be any multiplicity of 64 -> k*64, but 64 is computationally the cheapest option
+n_fine_ch=64
+#if [[ -n "${10}" && "${10}" != "-" ]]; then
+#   n_fine_ch=${10}
+#fi
 
 
 echo "#############################################"
@@ -200,8 +201,8 @@ merged_candfile=merged_${fil_to_process}channels_${start_ux}.cand
 merged_candidates=merged_${fil_to_process}channels_${start_ux}.cand_merged
 
 # WARNING : for fredda it may required -s -1 !!!
-echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o -F"
-merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o -F
+echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o -F -S -C ${start_channel}"
+merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o -F -S -C ${start_channel}
 
 # conversion of merged FIL to FITS file:
 echo "dumpfilfile_float ${merged_filfile} ${merged_fitsfile}"
