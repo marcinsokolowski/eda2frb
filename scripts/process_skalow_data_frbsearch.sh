@@ -165,8 +165,8 @@ do
          echo "skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a ${scrunch_factor} -P ${p0} -D 2 -A ch${channel_total} -b 1"
          skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a ${scrunch_factor} -P ${p0} -D 2 -A ch${channel_total} -b 1
          
-         echo "ln -s ch${channel_total}/dynspec_avg7_i.fil ${fil_file}"
-         ln -s ch${channel_total}/dynspec_avg7_i.fil ${fil_file}
+         echo "ln -s ch${channel_total}/dynspec_avg${scrunch_factor}_i.fil ${fil_file}"
+         ln -s ch${channel_total}/dynspec_avg${scrunch_factor}_i.fil ${fil_file}
          
          cd ../
       fi
