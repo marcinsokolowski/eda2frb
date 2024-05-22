@@ -162,8 +162,8 @@ do
          pwd
          echo "ln -sf ../${dada_file}"
          ln -sf ../${dada_file}
-         echo "skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a 7 -P ${p0} -D 2 -A ch${channel_total} -a 7 -b 1"
-         skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a 7 -P ${p0} -D 2 -A ch${channel_total} -a 7 -b 1
+         echo "skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a ${scrunch_factor} -P ${p0} -D 2 -A ch${channel_total} -b 1"
+         skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a ${scrunch_factor} -P ${p0} -D 2 -A ch${channel_total} -b 1
          
          echo "ln -s ch${channel_total}/dynspec_avg7_i.fil ${fil_file}"
          ln -s ch${channel_total}/dynspec_avg7_i.fil ${fil_file}
@@ -184,7 +184,7 @@ ls channel_???_?_*.fil >> fil_list_all_tmp
 all_count=`cat fil_list_all_tmp | wc -l`
 # ignore last 6 files:
 all_count_minus4=$(($all_count-6))
-head --lines=${all_count_minus4} fil_list_all_tmp > fil_list_all
+head --lines=${all_count_minus4} fil_list_all_tmp | head --lines=57 > fil_list_all # only 57 coarse channels 57*54 = 3078 fine channels -> only remove 6 fine channels to make it divide by 128 as required by FREDDA
 
 # div4=`echo ${fil_count} | awk '{print int($1/4);}'`
 # div4=`echo ${all_count_minus4} | awk '{print int($1/4);}'`
