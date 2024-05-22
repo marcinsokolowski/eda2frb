@@ -183,7 +183,13 @@ ls channel_??_?_*.fil >> fil_list_all_tmp
 ls channel_???_?_*.fil >> fil_list_all_tmp
 all_count=`cat fil_list_all_tmp | wc -l`
 # ignore last 6 files:
-all_count_minus4=$(($all_count-6))
+if [[ $all_count -gt 64 ]]; then
+   echo "INFO : there are $all_count filterbank files -> ignoring last 6 of them"
+   all_count_minus4=$(($all_count-6))
+else
+   echo "INFO : there are $all_count filterbank files -> can use all of them"
+   all_count_minus4=$all_count
+fi   
 head --lines=${all_count_minus4} fil_list_all_tmp | head --lines=57 > fil_list_all # only 57 coarse channels 57*54 = 3078 fine channels -> only remove 6 fine channels to make it divide by 128 as required by FREDDA
 
 # div4=`echo ${fil_count} | awk '{print int($1/4);}'`
