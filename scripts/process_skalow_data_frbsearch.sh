@@ -248,12 +248,12 @@ date > done.txt
 
 subdir=${merged_filfile%%.fil}
 echo "For viewing FREDDA FRB candidates use:"
-echo "$MWA_FRB/showcand_merged.sh $merged_filfile 10"
+echo "$MWA_FRB/scripts/showcand_merged.sh $merged_filfile 10"
 echo "or"
-echo "$MWA_FRB/showcand_all.sh $subdir 10"
+echo "$MWA_FRB/scripts/showcand_all.sh $subdir 10"
 echo "or"
 echo "cd $subdir"
-echo "$MWA_FRB/showcand.sh FIL_FILE 10" 
+echo "$MWA_FRB/scripts/showcand.sh FIL_FILE 10" 
 echo "or to create cutouts of fits files execute:"
 transposed_fits=`ls *out_t.fits | tail -1`
 echo "$MWA_FRB/scripts/create_cutouts_fits.sh $transposed_fits ${merged_candfile} - - MIN_DM"
