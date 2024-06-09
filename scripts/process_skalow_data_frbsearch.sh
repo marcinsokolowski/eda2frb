@@ -4,13 +4,13 @@
 
 export PATH=$MWA_FRB/scripts/:$PATH
 
-dada_files_path=/data/2024_04_22_pulsars/J0835-4510_flagants_90ch_ch230/230
+dada_files_path=`pwd`
 if [[ -n "$1" && "$1" != "-" ]]; then
    dada_files_path="$1"
 fi
 
 # 1000 -> 1.08us -> ~1080.us ~ 1ms 
-scrunch_factor=1000
+scrunch_factor=14 
 if [[ -n "$2" && "$2" != "-" ]]; then
    scrunch_factor=$2
 fi
@@ -25,11 +25,12 @@ if [[ -n "$3" && "$3" != "-" ]]; then
    digifil_options=$3
 fi
 
-merge_candidates=0
+merge_candidates=1
 if [[ -n "$4" && "$4" != "-" ]]; then
    merge_candidates=$4
 fi
 
+filterbank_msok_64ch
 if [[ -n "$5" && "$5" != "-" ]]; then
    filterbank_dir=$5
 fi
