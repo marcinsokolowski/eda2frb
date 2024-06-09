@@ -217,8 +217,10 @@ dumpfilfile_float ${merged_filfile} ${merged_fitsfile}
 # compilation:
 # LAPTOP : ~/github/fredda/branches/main/fredda/src/cudafdmt
 # aavs2-server : /home/msok/install/fredda/src/
-echo "/usr/local/bin//cudafdmt ${merged_filfile} -t 512 -d 2048 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile}"
-/usr/local/bin//cudafdmt ${merged_filfile} -t 512 -d 2048 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile}
+# echo "/usr/local/bin//cudafdmt ${merged_filfile} -t 512 -d 2048 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile}"
+# /usr/local/bin//cudafdmt ${merged_filfile} -t 512 -d 2048 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile}
+echo "/usr/local/bin//cudafdmt ${merged_filfile} -t 4096 -d 16384 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile} -A 1 -P 5 -O 50"
+/usr/local/bin//cudafdmt ${merged_filfile} -t 4096 -d 16384 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile} -A 1 -P 5 -O 50 
 
 path=`which my_friends_of_friends.py`
 # merge candidates 
@@ -241,6 +243,10 @@ fi
 # visualisation of candidates etc 
 # use ~/github/mwafrb/scripts/showcand_merged.sh 
 #                             create_cutouts_fits.sh
+
+echo "Generating png for maximum 1000 candidates (execute the line below with 1000 -> DIFFERENT NUMBER if more is needed)"
+echo "$MWA_FRB/scripts/showcand_merged.sh $merged_filfile 10 - 1000"
+$MWA_FRB/scripts/showcand_merged.sh $merged_filfile 10 - 1000
 
 # end of processing 
 cd ${dada_files_path}
