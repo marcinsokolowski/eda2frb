@@ -220,8 +220,8 @@ dumpfilfile_float ${merged_filfile} ${merged_fitsfile}
 # aavs2-server : /home/msok/install/fredda/src/
 # echo "/usr/local/bin//cudafdmt ${merged_filfile} -t 512 -d 2048 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile}"
 # /usr/local/bin//cudafdmt ${merged_filfile} -t 512 -d 2048 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile}
-echo "/usr/local/bin//cudafdmt ${merged_filfile} -t 4096 -d 16384 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile} -A 1 -P 5 -O 50 > fredda_totalpower_4sec.out 2>&1"
-/usr/local/bin//cudafdmt ${merged_filfile} -t 4096 -d 16384 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile} -A 1 -P 5 -O 50 > fredda_totalpower_4sec.out 2>&1
+echo "/usr/local/bin//cudafdmt ${merged_filfile} -t 4096 -d 16384 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile} -A 5 -P 5 -O 50 > fredda_totalpower_4sec.out 2>&1"
+/usr/local/bin//cudafdmt ${merged_filfile} -t 4096 -d 16384 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile} -A 5 -P 5 -O 50 > fredda_totalpower_4sec.out 2>&1
 
 path=`which my_friends_of_friends.py`
 # merge candidates 
