@@ -30,7 +30,7 @@ if [[ -n "$4" && "$4" != "-" ]]; then
    merge_candidates=$4
 fi
 
-filterbank_msok_64ch
+filterbank_dir=filterbank_msok_64ch
 if [[ -n "$5" && "$5" != "-" ]]; then
    filterbank_dir=$5
 fi
