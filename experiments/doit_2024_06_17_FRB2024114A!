@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# cd aavs@aavs2-server:/data/2024_06_17_FRB2024114A/FRB20240114_flagants_ch40_ch256/256
+
+export PATH=/home/msok/github/eda2frb/scripts/:/home/msok/github/mwafrb/scripts/:/home/msok/github/mwafrb/src/:$PATH
+
+/home/msok/github/eda2frb/scripts/process_skalow_data_frbsearch.sh /data/2024_06_17_FRB2024114A/FRB20240114_flagants_ch40_ch256/256/ 14 - 1 filterbank_msok_64ch 1 J0835-4510 0 256 64 >  msok_ch64.out 2>&1
