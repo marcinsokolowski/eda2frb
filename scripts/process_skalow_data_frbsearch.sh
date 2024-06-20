@@ -62,6 +62,15 @@ n_fine_ch=64
 #   n_fine_ch=${10}
 #fi
 
+if [[ -s daq.out ]]; then
+   err_count=`grep "Ring buffer occupancy" daq.out  |wc -l`
+   if [[ $err_count -gt 0 ]]; then
+      echo "WARNING : data acquisition was not keeping up and there are $err_count Ring buffer occupancy errors detected -> existing post processig now"
+      grep "Ring buffer occupancy" daq.out 
+      exit 
+   fi
+fi
+
 
 echo "#############################################"
 echo "PARAMETERS:"
@@ -163,9 +172,11 @@ do
          pwd
          echo "ln -sf ../${dada_file}"
          ln -sf ../${dada_file}
-         echo "skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a ${scrunch_factor} -P ${p0} -D 2 -A ch${channel_total} -b 1"
-         skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a ${scrunch_factor} -P ${p0} -D 2 -A ch${channel_total} -b 1
-         
+         date
+         echo "time skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a ${scrunch_factor} -P ${p0} -D 2 -A ch${channel_total} -b 1"
+         time skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a ${scrunch_factor} -P ${p0} -D 2 -A ch${channel_total} -b 1
+         date
+                  
          echo "ln -s ch${channel_total}/dynspec_avg${scrunch_factor}_i.fil ${fil_file}"
          ln -s ch${channel_total}/dynspec_avg${scrunch_factor}_i.fil ${fil_file}
          
@@ -264,6 +275,6 @@ echo "$MWA_FRB/scripts/showcand.sh FIL_FILE 10"
 echo "or to create cutouts of fits files execute:"
 transposed_fits=`ls *out_t.fits | tail -1`
 echo "$MWA_FRB/scripts/create_cutouts_fits.sh $transposed_fits ${merged_candfile} - - MIN_DM"
-
+$MWA_FRB/scripts/create_cutouts_fits.sh ${transposed_fits}
 
 date
