@@ -9,6 +9,7 @@ rsync -avP aavs2:${path}/*.cand* .
 rsync -avP aavs2:${path}/total_power.txt .
 rsync -avP aavs2:${path}/fredda_totalpower_4sec.out .
 rsync -avP aavs2:${path}/*.png .
+rsync -avP aavs2:${path}/candidates_fits .
 
 echo "STATISTICS:"
 wc *.cand*

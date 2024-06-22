@@ -256,13 +256,15 @@ fi
 # use ~/github/mwafrb/scripts/showcand_merged.sh 
 #                             create_cutouts_fits.sh
 
+# create png files from FREDDA/Keith's python script:
 echo "Generating png for maximum 1000 candidates (execute the line below with 1000 -> DIFFERENT NUMBER if more is needed)"
 echo "$MWA_FRB/scripts/showcand_merged.sh $merged_filfile 10 - 1000"
 $MWA_FRB/scripts/showcand_merged.sh $merged_filfile 10 - 1000
 
-# end of processing 
-cd ${dada_files_path}
-date > done.txt
+# Create Cutouts :
+transposed_fits=`ls *out_t.fits | tail -1`
+echo "$MWA_FRB/scripts/create_cutouts_fits.sh $transposed_fits ${merged_candfile} - - MIN_DM"
+$MWA_FRB/scripts/create_cutouts_fits.sh ${transposed_fits}
 
 subdir=${merged_filfile%%.fil}
 echo "For viewing FREDDA FRB candidates use:"
@@ -273,8 +275,9 @@ echo "or"
 echo "cd $subdir"
 echo "$MWA_FRB/scripts/showcand.sh FIL_FILE 10" 
 echo "or to create cutouts of fits files execute:"
-transposed_fits=`ls *out_t.fits | tail -1`
-echo "$MWA_FRB/scripts/create_cutouts_fits.sh $transposed_fits ${merged_candfile} - - MIN_DM"
-$MWA_FRB/scripts/create_cutouts_fits.sh ${transposed_fits}
+
+# end of processing 
+cd ${dada_files_path}
+date > done.txt
 
 date
