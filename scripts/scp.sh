@@ -22,3 +22,9 @@ candmerged_file=`ls *.cand_merged | tail -1`
 
 cand_file=`ls *.cand | tail -1`
 /home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${cand_file}
+
+# Show png-s from FREDDA:
+gthumb -n *png &
+
+# plot total power around merged candidates:
+~/github/mwafrb/scripts/plot_total_power_for_merged.sh
