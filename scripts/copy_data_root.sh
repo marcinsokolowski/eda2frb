@@ -31,6 +31,7 @@ if [[ $count_remote -gt 0 && $count_local -le 0 ]]; then
    rsync -avP ${remote_server}:${remote_data_dir}/FRB* ${local_data_dir}/ > ${local_data_dir}/scp.out 2>&1
    
    cd ${local_data_dir}/
+   date > copied.txt
    chown aavs .
    chgrp aavs .
    chown aavs * -R

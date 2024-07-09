@@ -103,9 +103,9 @@ if [[ $use_digifil -le 0 ]]; then
 fi   
 
 cd ${dada_files_path}
-if [[ -s done.txt ]]; then
+if [[ -s frb_processing.done ]]; then
    echo "WARNING : the processing was already performed and finished at:"
-   cat done.txt
+   cat frb_processing.done
    echo "WARNING : exiting the script now"
    exit;
 fi
@@ -278,6 +278,6 @@ echo "or to create cutouts of fits files execute:"
 
 # end of processing 
 cd ${dada_files_path}
-date > done.txt
+date > frb_processing.done
 
 date
