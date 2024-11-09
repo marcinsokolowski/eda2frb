@@ -1,12 +1,14 @@
 #!/bin/bash
 
 dt=`date +%Y_%m_%d_pulsars`
-local_data_dir="/data/${dt}/"
+# local_data_dir="/data/${dt}/"
+local_data_dir=`pwd`
 if [[ -n "$1" && "$1" != "-" ]]; then
    local_data_dir="$1"
 fi
 
-templates="FRB*/??? S1832-0911*/???"
+# templates="FRB*/??? S1832-0911*/???"
+templates="FRB*"
 if [[ -n "$2" && "$2" != "-" ]]; then
    templates="$2"
 fi
@@ -14,12 +16,12 @@ fi
 
 echo "-------------------------------- auto-processing FRB data --------------------------------"
 date
-count_local=`ls -ald ${local_data_dir}/FRB* 2>&1 |  grep -v "ls: cannot access" | wc -l `
+count_local=`ls -ald ${local_data_dir}/${templates} 2>&1 |  grep -v "ls: cannot access" | wc -l `
 
 if [[ $count_local -gt 0 ]]; then
    cd ${local_data_dir}
    if [[ -s copied.txt ]]; then
-      for frb_dir in `ls -d ${templates}`
+      for frb_dir in `ls -d ${templates}/???`
       do
          if [[ -d $frb_dir ]]; then
             echo "DEBUG : Starting processing data in $frb_dir"
