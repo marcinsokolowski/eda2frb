@@ -2,7 +2,7 @@
 
 # find . -name "*.dada" -exec dirname {} \; | sort -u
 
-export PATH=$MWA_FRB/scripts/:$PATH
+export PATH=~/github/eda2frb/scripts/:$MWA_FRB/scripts/:/usr/local/bin/:$PATH
 
 dada_files_path=`pwd`
 if [[ -n "$1" && "$1" != "-" ]]; then
@@ -56,6 +56,8 @@ if [[ -n "$9" && "$9" != "-" ]]; then
    start_channel=$9
 fi
 
+exclude_daytime=0
+
 # use 64 fine channels as the current merge is optimised and hardcoded for this number. Could also be any multiplicity of 64 -> k*64, but 64 is computationally the cheapest option
 n_fine_ch=64
 #if [[ -n "${10}" && "${10}" != "-" ]]; then
@@ -83,6 +85,7 @@ echo "observed_object = $observed_object"
 echo "use_digifil     = $use_digifil"
 echo "start_channel   = $start_channel"
 echo "n_fine_ch       = $n_fine_ch"
+echo "exclude_daytime = $exclude_daytime"
 echo "#############################################"
 
 
@@ -114,7 +117,7 @@ fi
 start_ux=`ls channel_0_*.dada | cut -b 13-22`
 hour_local=`date -d "1970-01-01 UTC $start_ux seconds" +%H`
 
-if [[ $hour_local -ge 6 && $hour_local -le 17 ]]; then
+if [[ $exclude_daytime -gt 0 && $hour_local -ge 6 && $hour_local -le 17 ]]; then
    echo "WARNING : daytime observation started at:"
    date -d "1970-01-01 UTC $start_ux seconds" +"%Y-%m-%d %T"
    

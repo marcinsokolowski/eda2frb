@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dt=`date +%Y_%m_%d_*`
+dt=`date +%Y_%m_%d_pulsars_msok`
 if [[ -n "$1" && "$1" != "-" ]]; then
   dt="$1"
 fi

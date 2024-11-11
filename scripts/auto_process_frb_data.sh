@@ -1,5 +1,21 @@
 #!/bin/bash
 
+wait_for_file () {
+  file=$1
+  if [[ -n "$1" && "$1" != "-" ]]; then
+     file="$1"
+  fi
+
+   ux=`date +%s`
+   while [[ ! -s ${file} ]];
+   do
+      ux=`date +%s`
+      echo "Waiting 10 seconds for file $file to be created (ux = $ux) ..."
+      sleep 10
+   done   
+}
+
+
 dt=`date +%Y_%m_%d_pulsars`
 # local_data_dir="/data/${dt}/"
 local_data_dir=`pwd`
@@ -13,6 +29,19 @@ if [[ -n "$2" && "$2" != "-" ]]; then
    templates="$2"
 fi
 
+echo "############################################"
+echo "PARAMETERS:"
+echo "############################################"
+echo "local_data_dir = $local_data_dir"
+echo "templates      = $templates"
+echo "############################################"
+
+
+if [[ -s frb_processing.done ]]; then
+   pwd
+   echo "Data in this directory already processed -> exiting"
+   exit;
+fi
 
 echo "-------------------------------- auto-processing FRB data --------------------------------"
 date
@@ -20,6 +49,8 @@ count_local=`ls -ald ${local_data_dir}/${templates} 2>&1 |  grep -v "ls: cannot 
 
 if [[ $count_local -gt 0 ]]; then
    cd ${local_data_dir}
+   wait_for_file copied.txt
+   
    if [[ -s copied.txt ]]; then
       for frb_dir in `ls -d ${templates}/???`
       do
@@ -46,6 +77,8 @@ if [[ $count_local -gt 0 ]]; then
             echo "DEBUG : finished processing data (took $diff seconds) in $frb_dir at :"
             date
             cd -
+            
+            date > frb_processing.done                        
          else
             echo "DEBUG : non-directory $frb_dir skipped"
          fi
