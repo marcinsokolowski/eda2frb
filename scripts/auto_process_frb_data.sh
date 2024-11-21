@@ -29,11 +29,18 @@ if [[ -n "$2" && "$2" != "-" ]]; then
    templates="$2"
 fi
 
+auto_remove=0
+if [[ -n "$3" && "$3" != "-" ]]; then
+   auto_remove=$3
+fi
+
+
 echo "############################################"
 echo "PARAMETERS:"
 echo "############################################"
 echo "local_data_dir = $local_data_dir"
 echo "templates      = $templates"
+echo "auto_remove    = $auto_remove"
 echo "############################################"
 
 
@@ -77,6 +84,15 @@ if [[ $count_local -gt 0 ]]; then
             echo "DEBUG : finished processing data (took $diff seconds) in $frb_dir at :"
             date
             cd -
+            
+            if [[ $auto_remove -gt 0 ]]; then
+                echo "WARNING : removing .dada files, you have 10 seconds to change your mind ..."
+                sleep 10
+                echo "rm -f *.dada"
+                rm -f *.dada
+            else
+            	echo "WARNING : auto-remove is disabled this may result in accumulation of large amount of data."
+            fi
             
             date > frb_processing.done                        
          else
