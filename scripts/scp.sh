@@ -15,12 +15,19 @@ if [[ -n "$3" && "$3" != "-" ]]; then
    do_plots=$3
 fi
 
+root_options="-l"
+if [[ -n "$4" && "$4" != "-" ]]; then
+   root_options="$4"
+fi
+
+
 echo "#########################################"
 echo "PARAMETERS:"
 echo "#########################################"
 echo "path = $path"
 echo "do_copy  = $do_copy"
 echo "do_plots = $do_plots"
+echo "root_options = $root_options"
 echo "#########################################"
 
 
@@ -42,16 +49,20 @@ wc *.cand*
 sleep 10
 
 if [[ $do_plots -gt 0 ]]; then
-   ~/github/mwafrb/scripts/plot_median_of_median_check.sh fredda_totalpower_4sec.out
+   echo "~/github/mwafrb/scripts/plot_median_of_median_check.sh fredda_totalpower_4sec.out ${root_options}"
+   ~/github/mwafrb/scripts/plot_median_of_median_check.sh fredda_totalpower_4sec.out ${root_options}
 
    candmerged_file=`ls *.cand_merged | tail -1`
-   /home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${candmerged_file}
+   echo "/home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${candmerged_file} - - ${root_options}"
+   /home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${candmerged_file} - - ${root_options}
 
    cand_file=`ls *.cand | tail -1`
-   /home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${cand_file}
+   echo "/home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${cand_file} - - ${root_options}"
+   /home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${cand_file} - - ${root_options}
 
    # plot total power around merged candidates:
-   ~/github/mwafrb/scripts/plot_total_power_for_merged.sh
+   echo "~/github/mwafrb/scripts/plot_total_power_for_merged.sh - - ${root_options}"
+   ~/github/mwafrb/scripts/plot_total_power_for_merged.sh - - ${root_options}
 else
    echo "WARNING : ploting is disabled (3rd parameter <= 0)"
 fi
