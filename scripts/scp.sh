@@ -20,6 +20,14 @@ if [[ -n "$4" && "$4" != "-" ]]; then
    root_options="$4"
 fi
 
+local_dir=`pwd`
+if [[ -n "$5" && "$5" != "-" ]]; then
+   local_dir=$5
+   mkdir -p ${local_dir}
+   cd ${local_dir}
+   pwd
+fi
+
 
 echo "#########################################"
 echo "PARAMETERS:"
@@ -28,6 +36,7 @@ echo "path = $path"
 echo "do_copy  = $do_copy"
 echo "do_plots = $do_plots"
 echo "root_options = $root_options"
+echo "local_dir = ${local_dir}"
 echo "#########################################"
 
 
