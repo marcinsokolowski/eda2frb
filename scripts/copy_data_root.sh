@@ -39,7 +39,10 @@ date
 count_remote=`ssh ${remote_server} "ls -ald ${remote_data_dir}/FRB* | wc -l"`
 count_local=`ls -ald ${local_data_dir}/FRB* 2>&1 |  grep -v "ls: cannot access" | wc -l `
 echo "DEBUG : count_remote = $count_remote, count_local = $count_local"
-if [[ $count_remote -gt 0 && $count_local -le 0 ]]; then
+# if [[ $count_remote -gt 0 && $count_local -le 0 ]]; then
+if [[ -s ${local_data_dir}/copied.txt ]]; then
+   echo "DEBUG : data from ${remote_server}:${remote_data_dir}/FRB* already copied"
+else 
    echo "Starting copying data at:"
    date
    mkdir -p ${local_data_dir}/
@@ -57,7 +60,5 @@ if [[ $count_remote -gt 0 && $count_local -le 0 ]]; then
    
    echo "Finished copying at:"
    date
-else
-   echo "DEBUG : data from ${remote_server}:${remote_data_dir}/FRB* already copied"
 fi
 
