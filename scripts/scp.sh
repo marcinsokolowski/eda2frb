@@ -58,6 +58,8 @@ wc *.cand*
 sleep 10
 
 if [[ $do_plots -gt 0 ]]; then
+   mkdir -p images/
+
    echo "~/github/mwafrb/scripts/plot_median_of_median_check.sh fredda_totalpower_4sec.out ${root_options}"
    ~/github/mwafrb/scripts/plot_median_of_median_check.sh fredda_totalpower_4sec.out ${root_options}
 

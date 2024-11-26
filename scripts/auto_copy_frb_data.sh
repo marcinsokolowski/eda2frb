@@ -28,7 +28,7 @@ if [[ -d ${local_dir} ]]; then
    cd ${local_dir}
    mkdir -p ${dateset}/${remote_subdirs}
    cd ${dateset}/${remote_subdirs}
-   echo "/home/msok/github/eda2frb/scripts/scp.sh ${remote_dir}" > scp!
+   echo "/home/msok/github/eda2frb/scripts/scp.sh ${remote_dir} - - \"-l -b -q\"" > scp!
    chmod +x scp!
    
    date
