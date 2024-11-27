@@ -16,19 +16,25 @@ if [[ -n "$3" && "$3" != "-" ]]; then
    local_dir="$3"
 fi
 
+show_ds9=1
+if [[ -n "$4" && "$4" != "-" ]]; then
+   show_ds9=$4
+fi
+
 echo "########################################"
 echo "PARAMETERS:"
 echo "########################################"
 echo "dataset = $dataset"
 echo "remote_dir = $remote_dir"
 echo "local_dir = $local_dir"
+echo "show_ds9  = $show_ds9"
 echo "########################################"
 
 if [[ -d ${local_dir} ]]; then
    cd ${local_dir}
    mkdir -p ${dateset}/${remote_subdirs}
    cd ${dateset}/${remote_subdirs}
-   echo "/home/msok/github/eda2frb/scripts/scp.sh ${remote_dir} - - \"-l -b -q\"" > scp!
+   echo "/home/msok/github/eda2frb/scripts/scp.sh ${remote_dir} - - \"-l -b -q\" - $show_ds9 " > scp!
    chmod +x scp!
    
    date

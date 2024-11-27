@@ -28,6 +28,11 @@ if [[ -n "$5" && "$5" != "-" ]]; then
    pwd
 fi
 
+show_ds9=1
+if [[ -n "$6" && "$6" != "-" ]]; then
+   show_ds9=$6
+fi
+
 
 echo "#########################################"
 echo "PARAMETERS:"
@@ -37,6 +42,7 @@ echo "do_copy  = $do_copy"
 echo "do_plots = $do_plots"
 echo "root_options = $root_options"
 echo "local_dir = ${local_dir}"
+echo "show_ds9 = $show_ds9"
 echo "#########################################"
 
 
@@ -72,8 +78,8 @@ if [[ $do_plots -gt 0 ]]; then
    /home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${cand_file} - - ${root_options}
 
    # plot total power around merged candidates:
-   echo "~/github/mwafrb/scripts/plot_total_power_for_merged.sh - - ${root_options}"
-   ~/github/mwafrb/scripts/plot_total_power_for_merged.sh - - ${root_options}
+   echo "~/github/mwafrb/scripts/plot_total_power_for_merged.sh - - ${root_options} ${show_ds9}"
+   ~/github/mwafrb/scripts/plot_total_power_for_merged.sh - - ${root_options} ${show_ds9}
 else
    echo "WARNING : ploting is disabled (3rd parameter <= 0)"
 fi
