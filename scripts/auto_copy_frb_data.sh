@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dateset=2024_11_23_FRB2024114A
+dataset=2024_11_23_FRB2024114A
 if [[ -n "$1" && "$1" != "-" ]]; then
    dataset="$1"
 fi
@@ -32,8 +32,8 @@ echo "########################################"
 
 if [[ -d ${local_dir} ]]; then
    cd ${local_dir}
-   mkdir -p ${dateset}/${remote_subdirs}
-   cd ${dateset}/${remote_subdirs}
+   mkdir -p ${dataset}/${remote_subdirs}
+   cd ${dataset}/${remote_subdirs}
    pwd
    echo "/home/msok/github/eda2frb/scripts/scp.sh ${remote_dir} - - \"-l -b -q\" - $show_ds9 " > scp!
    chmod +x scp!
