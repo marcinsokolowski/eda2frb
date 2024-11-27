@@ -34,8 +34,12 @@ if [[ -d ${local_dir} ]]; then
    cd ${local_dir}
    mkdir -p ${dateset}/${remote_subdirs}
    cd ${dateset}/${remote_subdirs}
+   pwd
    echo "/home/msok/github/eda2frb/scripts/scp.sh ${remote_dir} - - \"-l -b -q\" - $show_ds9 " > scp!
    chmod +x scp!
+
+   echo "cat scp!"
+   cat scp!
    
    date
    

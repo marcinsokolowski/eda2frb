@@ -66,16 +66,16 @@ sleep 10
 if [[ $do_plots -gt 0 ]]; then
    mkdir -p images/
 
-   echo "~/github/mwafrb/scripts/plot_median_of_median_check.sh fredda_totalpower_4sec.out ${root_options}"
-   ~/github/mwafrb/scripts/plot_median_of_median_check.sh fredda_totalpower_4sec.out ${root_options}
+   echo "~/github/mwafrb/scripts/plot_median_of_median_check.sh fredda_totalpower_4sec.out \"${root_options}\""
+   ~/github/mwafrb/scripts/plot_median_of_median_check.sh fredda_totalpower_4sec.out "${root_options}"
 
    candmerged_file=`ls *.cand_merged | tail -1`
-   echo "/home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${candmerged_file} - - ${root_options}"
-   /home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${candmerged_file} - - ${root_options}
+   echo "/home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${candmerged_file} - - \"${root_options}\""
+   /home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${candmerged_file} - - "${root_options}"
 
    cand_file=`ls *.cand | tail -1`
-   echo "/home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${cand_file} - - ${root_options}"
-   /home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${cand_file} - - ${root_options}
+   echo "/home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${cand_file} - - \"${root_options}\""
+   /home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${cand_file} - - "${root_options}"
 
    # plot total power around merged candidates:
    echo "~/github/mwafrb/scripts/plot_total_power_for_merged.sh - - ${root_options} ${show_ds9}"
