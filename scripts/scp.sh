@@ -21,12 +21,14 @@ if [[ -n "$4" && "$4" != "-" ]]; then
 fi
 
 local_dir=`pwd`
+pwd
 if [[ -n "$5" && "$5" != "-" ]]; then
    local_dir=$5
    mkdir -p ${local_dir}
    cd ${local_dir}
    pwd
 fi
+pwd
 
 show_ds9=1
 if [[ -n "$6" && "$6" != "-" ]]; then

@@ -32,6 +32,11 @@ echo "########################################"
 
 if [[ -d ${local_dir} ]]; then
    cd ${local_dir}
+   
+   if [[ -d ${dataset}/${remote_subdirs} ]]; then
+      echo "WARNING : directory already copied earlier -> some things may get overwritten"
+   fi
+   
    mkdir -p ${dataset}/${remote_subdirs}
    cd ${dataset}/${remote_subdirs}
    pwd
