@@ -78,8 +78,8 @@ if [[ $do_plots -gt 0 ]]; then
    /home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${cand_file} - - "${root_options}"
 
    # plot total power around merged candidates:
-   echo "~/github/mwafrb/scripts/plot_total_power_for_merged.sh - - ${root_options} ${show_ds9}"
-   ~/github/mwafrb/scripts/plot_total_power_for_merged.sh - - ${root_options} ${show_ds9}
+   echo "~/github/mwafrb/scripts/plot_total_power_for_merged.sh - - \"${root_options}\" ${show_ds9}"
+   ~/github/mwafrb/scripts/plot_total_power_for_merged.sh - - "${root_options}" ${show_ds9}
 else
    echo "WARNING : ploting is disabled (3rd parameter <= 0)"
 fi
