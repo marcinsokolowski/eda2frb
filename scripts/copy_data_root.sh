@@ -1,14 +1,24 @@
 #!/bin/bash
 
-dt=`date +%Y_%m_%d_pulsars_msok`
-if [[ -n "$1" && "$1" != "-" ]]; then
-  dt="$1"
+# WARNING : forth parameter goes first to be used as default :
+remote_server="msok@eda2-server"
+if [[ -n "$4" && "$4" != "-" ]]; then
+   remote_server="$4"
 fi
 
 remote_data_drive="/data2/"
 if [[ -n "$2" && "$2" != "-" ]]; then
    remote_data_drive="$2"  
 fi
+
+# WARNING 1st parameter goes last 
+# dt=`date +%Y_%m_%d_pulsars_msok`
+last_frb_path=`ssh ${remote_server} "ls -trd ${remote_data_drive}/202?_*FRB*" | tail -1`
+dt=`basename ${last_frb_path}`
+if [[ -n "$1" && "$1" != "-" ]]; then
+  dt="$1"
+fi
+
 remote_data_dir=${remote_data_drive}/${dt}/
 
 local_data_dir="/data/${dt}/"
@@ -16,10 +26,6 @@ if [[ -n "$3" && "$3" != "-" ]]; then
    local_data_dir="$3"
 fi
 
-remote_server="msok@eda2-server"
-if [[ -n "$4" && "$4" != "-" ]]; then
-   remote_server="$4"
-fi
 
 echo "#############################################"
 echo "PARAMETERS:"
