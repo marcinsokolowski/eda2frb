@@ -13,7 +13,7 @@ fi
 
 # WARNING 1st parameter goes last 
 # dt=`date +%Y_%m_%d_pulsars_msok`
-last_frb_path=`ssh ${remote_server} "ls -trd ${remote_data_drive}/202?_*FRB*" | tail -1`
+last_frb_path=`ssh ${remote_server} "ls -d ${remote_data_drive}/202?_*FRB*" | tail -1`
 dt=`basename ${last_frb_path}`
 if [[ -n "$1" && "$1" != "-" ]]; then
   dt="$1"

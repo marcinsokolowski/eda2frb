@@ -18,7 +18,7 @@ if [[ -n "$3" && "$3" != "-" ]]; then
 fi
 
 # dir_template="2024_11_??_FRB*"
-last_frb_path=`ls -trd ${datadir}/202?_*FRB* | tail -1`
+last_frb_path=`ls -d ${datadir}/202?_*FRB* | tail -1`
 dir_template=`basename $last_frb_path`
 if [[ -n "$1" && "$1" != "-" ]]; then
    dir_template="$1"
