@@ -1,6 +1,11 @@
 #!/bin/bash
 
-dataset=2024_11_23_FRB2024114A
+remote_server=aavs2
+
+# dataset=2024_11_23_FRB2024114A
+dataset_fullpath=`ssh ${remote_server} "ls -d /data/202?_??_??_FRB* | tail -1"`
+echo "DEBUG : the latest FRB observation on ${remote_server} is ${dataset_fullpath}"
+dataset=`basename $dataset_fullpath`
 if [[ -n "$1" && "$1" != "-" ]]; then
    dataset="$1"
 fi
