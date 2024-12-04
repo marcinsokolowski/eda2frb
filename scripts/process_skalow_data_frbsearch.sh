@@ -56,6 +56,11 @@ if [[ -n "$9" && "$9" != "-" ]]; then
    start_channel=$9
 fi
 
+start_ux=-1
+if [[ -n "${10}" && "${10}" != "-" ]]; then
+   start_ux=${10}
+fi
+
 exclude_daytime=0
 
 # use 64 fine channels as the current merge is optimised and hardcoded for this number. Could also be any multiplicity of 64 -> k*64, but 64 is computationally the cheapest option
@@ -86,6 +91,7 @@ echo "use_digifil     = $use_digifil"
 echo "start_channel   = $start_channel"
 echo "n_fine_ch       = $n_fine_ch"
 echo "exclude_daytime = $exclude_daytime"
+echo "start_ux        = $start_ux"
 echo "#############################################"
 
 
@@ -114,7 +120,13 @@ if [[ -s frb_processing.done ]]; then
 fi
 
 # check time of acquisition:
-start_ux=`ls channel_0_*.dada | cut -b 13-22`
+dada_count=`ls channel_0_*.dada 2>/dev/null | wc -l`
+if [[ $dada_count -gt 0 ]]; then
+   start_ux=`ls channel_0_*.dada | cut -b 13-22`
+   echo "DEBUG : start_ux = $start_ux (from .dada files)"
+else 
+   echo "DEBUG : start_ux = $start_ux (from parameters)"
+fi   
 hour_local=`date -d "1970-01-01 UTC $start_ux seconds" +%H`
 
 if [[ $exclude_daytime -gt 0 && $hour_local -ge 6 && $hour_local -le 17 ]]; then
@@ -140,7 +152,7 @@ fi
 
 mkdir -p ${filterbank_dir}
 # digifil -t 1000 -o filterbank_1ms/channel_57_1_1713782313.693404.fil channel_57_1_1713782313.693404.dada -b 8
-start_ux=-1
+# start_ux=-1
 fil_count=0
 for dada_file in `ls channel*.dada`
 do
