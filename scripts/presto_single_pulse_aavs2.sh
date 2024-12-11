@@ -41,7 +41,6 @@ do
    echo "python ~/github/presto/bin/single_pulse_search.py --threshold=${thresh_sigma} ${datfile}"
    python ~/github/presto/bin/single_pulse_search.py --threshold=${thresh_sigma} ${datfile}
 done
-cd ..
 
 # merging all single pulses to a single plot:
 echo "python ~/github/presto/bin/single_pulse_search.py _DM*.??*.singlepulse"
@@ -50,3 +49,4 @@ python ~/github/presto/bin/single_pulse_search.py _DM*.??*.singlepulse
 echo "ps2pdf _singlepulse.ps singlepulse_thresh${thresh_sigma}.pdf"
 ps2pdf _singlepulse.ps singlepulse_thresh${thresh_sigma}.pdf
 
+cd ..
