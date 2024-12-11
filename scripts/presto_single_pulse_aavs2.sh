@@ -44,8 +44,8 @@ done
 cd ..
 
 # merging all single pulses to a single plot:
-echo "single_pulse_search.py _DM*.??*.singlepulse"
-single_pulse_search.py _DM*.??*.singlepulse
+echo "python ~/github/presto/bin/single_pulse_search.py _DM*.??*.singlepulse"
+python ~/github/presto/bin/single_pulse_search.py _DM*.??*.singlepulse
 
 echo "ps2pdf _singlepulse.ps singlepulse_thresh${thresh_sigma}.pdf"
 ps2pdf _singlepulse.ps singlepulse_thresh${thresh_sigma}.pdf
