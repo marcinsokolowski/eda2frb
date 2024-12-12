@@ -26,6 +26,11 @@ if [[ -n "$3" && "$3" != "-" ]]; then
    local_data_dir="$3"
 fi
 
+last_n_datasets=10
+if [[ -n "$4" && "$4" != "-" ]]; then
+   last_n_datasets=$4
+fi
+
 
 echo "#############################################"
 echo "PARAMETERS:"
@@ -35,6 +40,7 @@ echo "remote_data_drive = $remote_data_drive"
 echo "remote_data_dir   = $remote_data_dir"
 echo "local_data_dir    = $local_data_dir"
 echo "remote_server     = $remote_server"
+echo "last_n_datasets   = $last_n_datasets"
 echo "#############################################"
 
 
@@ -49,7 +55,7 @@ fi
 
 for type in `echo $object_types`
 do
-   for remote_path in `ssh ${remote_server} "ls -ad ${remote_drive}/202[4,5,6]_??_??_${type}* | tail --lines=${last_n_datasets}"`
+   for remote_path in `ssh ${remote_server} "ls -ad ${remote_data_drive}/202[4,5,6]_??_??_${type}* | tail --lines=${last_n_datasets}"`
    do   
       bdir=`basename ${remote_path}`
       mkdir -p ${local_data_dir}/${bdir}
