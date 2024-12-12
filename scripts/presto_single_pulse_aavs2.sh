@@ -31,8 +31,8 @@ outdir=presto_sps_thresh${thresh_sigma}
 mkdir -p ${outdir}
 
 # prepsubband :
-echo "prepsubband updated.fil -o ${outdir}/ -numdms $numdms"
-prepsubband updated.fil -o ${outdir}/ -numdms $numdms
+echo "prepsubband updated.fil -o ${outdir}/ -numdms $numdms -nsub 640"
+prepsubband updated.fil -o ${outdir}/ -numdms $numdms -nsub 640
 
 # single pulse searches :
 cd ${outdir}/
