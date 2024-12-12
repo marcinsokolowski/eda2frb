@@ -29,6 +29,12 @@ if [[ -n "$4" && "$4" != "-" ]]; then
    auto_remove=$4
 fi
 
+last_n_datasets=10
+if [[ -n "$5" && "$5" != "-" ]]; then
+   last_n_datasets=$5
+fi
+
+
 
 echo "#######################################"
 echo "PARAMETERS:"
@@ -37,11 +43,12 @@ echo "dir_template = $dir_template (from last_frb_path = $last_frb_path )"
 echo "frb_templates = $frb_templates"
 echo "datadir       = $datadir"
 echo "auto_remove   = $auto_remove"
+echo "last_n_datasets = $last_n_datasets"
 echo "#######################################"
 
 cd $datadir
 pwd
-for dir in `ls -d ${dir_template}`
+for dir in `ls -d ${dir_template} | tail --lines=${last_n_datasets}`
 do
    if [[ ! -s ${dir}/frb_processing.done ]]; then
       cd $dir
