@@ -20,6 +20,10 @@ if [[ -n "$4" && "$4" != "-" ]]; then
    dmstep=$4
 fi
 
+outdir=presto_sps_thresh${thresh_sigma}_numdms${numdms}_dmstep${dmstep}
+if [[ -n "$5" && "$5" != "-" ]]; then
+   outdir="$5"
+fi
 
 echo "##########################################"
 echo "PARAMETERS of presto_single_pulse_aavs2.sh :"
@@ -27,32 +31,36 @@ echo "thresh_sigma = $thresh_sigma"
 echo "filfile      = $filfile"
 echo "numdms       = $numdms"
 echo "dmstep       = $dmstep"
+echo "outdir       = $outdir"
 echo "##########################################"
 
 echo "INFO : activating Python environment with PRESTO single pulse search enabled"
 echo "source ~/msok_python38_env/bin/activate"
 source ~/msok_python38_env/bin/activate
 
-outdir=presto_sps_thresh${thresh_sigma}
-mkdir -p ${outdir}
+if [[ -d ${outdir} ]]; then
+   echo "INFO : directory $outdir already exists -> processing skipped"
+else
+   mkdir -p ${outdir}
 
-# prepsubband :
-echo "prepsubband updated.fil -o ${outdir}/ -numdms $numdms -nsub 256 -dmstep ${dmstep}"
-prepsubband updated.fil -o ${outdir}/ -numdms $numdms -nsub 256 -dmstep ${dmstep}
+   # prepsubband :
+   echo "prepsubband updated.fil -o ${outdir}/ -numdms $numdms -nsub 256 -dmstep ${dmstep}"
+   prepsubband updated.fil -o ${outdir}/ -numdms $numdms -nsub 256 -dmstep ${dmstep}
 
-# single pulse searches :
-cd ${outdir}/
-for datfile in `ls *.dat`
-do  
-   echo "python ~/github/presto/bin/single_pulse_search.py --threshold=${thresh_sigma} ${datfile}"
-   python ~/github/presto/bin/single_pulse_search.py --threshold=${thresh_sigma} ${datfile}
-done
+   # single pulse searches :
+   cd ${outdir}/
+   for datfile in `ls *.dat`
+   do  
+      echo "python ~/github/presto/bin/single_pulse_search.py --threshold=${thresh_sigma} ${datfile}"
+      python ~/github/presto/bin/single_pulse_search.py --threshold=${thresh_sigma} ${datfile}
+   done
 
-# merging all single pulses to a single plot:
-echo "python ~/github/presto/bin/single_pulse_search.py _DM*.??*.singlepulse"
-python ~/github/presto/bin/single_pulse_search.py _DM*.??*.singlepulse
+   # merging all single pulses to a single plot:
+   echo "python ~/github/presto/bin/single_pulse_search.py _DM*.??*.singlepulse"
+   python ~/github/presto/bin/single_pulse_search.py _DM*.??*.singlepulse
 
-echo "ps2pdf _singlepulse.ps singlepulse_thresh${thresh_sigma}.pdf"
-ps2pdf _singlepulse.ps singlepulse_thresh${thresh_sigma}.pdf
+   echo "ps2pdf _singlepulse.ps singlepulse_thresh${thresh_sigma}.pdf"
+   ps2pdf _singlepulse.ps singlepulse_thresh${thresh_sigma}.pdf
 
-cd ..
+   cd ..
+fi   
