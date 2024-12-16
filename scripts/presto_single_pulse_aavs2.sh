@@ -42,10 +42,14 @@ if [[ -d ${outdir} ]]; then
    echo "INFO : directory $outdir already exists -> processing skipped"
 else
    mkdir -p ${outdir}
+   
+   # RFI flagging :
+   echo "rfifind -time 2.0 -o updated_rfiflags.mask updated.fil"
+   rfifind -time 2.0 -o updated_rfiflags.mask updated.fil
 
    # prepsubband :
-   echo "prepsubband updated.fil -o ${outdir}/ -numdms $numdms -nsub 256 -dmstep ${dmstep}"
-   prepsubband updated.fil -o ${outdir}/ -numdms $numdms -nsub 256 -dmstep ${dmstep}
+   echo "prepsubband updated.fil -o ${outdir}/ -numdms $numdms -nsub 256 -dmstep ${dmstep} -mask updated_rfiflags.mask"
+   prepsubband updated.fil -o ${outdir}/ -numdms $numdms -nsub 256 -dmstep ${dmstep} -mask updated_rfiflags.mask
 
    # single pulse searches :
    cd ${outdir}/
