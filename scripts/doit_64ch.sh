@@ -10,8 +10,13 @@ if [[ -n "$2" && "$2" != "-" ]]; then
    start_ux=$2
 fi
 
+total_power_threshold=5
+if [[ -n "$3" && "$3" != "-" ]]; then
+   total_power_threshold=$3
+fi
+
 export PATH=/home/msok/github/eda2frb/scripts/:/home/msok/github/mwafrb/scripts/:/home/msok/github/mwafrb/src/:$PATH
 
 path=`pwd`
-echo "/home/msok/github/eda2frb/scripts/process_skalow_data_frbsearch.sh $path 14 - 1 filterbank_msok_64ch 1 ${object} 0 256 ${start_ux} >  msok_ch64.out 2>&1"
-/home/msok/github/eda2frb/scripts/process_skalow_data_frbsearch.sh $path 14 - 1 filterbank_msok_64ch 1 ${object} 0 256 ${start_ux} >  msok_ch64.out 2>&1
+echo "/home/msok/github/eda2frb/scripts/process_skalow_data_frbsearch.sh $path 14 - 1 filterbank_msok_64ch 1 ${object} 0 256 ${start_ux} ${total_power_threshold} >  msok_ch64.out 2>&1"
+/home/msok/github/eda2frb/scripts/process_skalow_data_frbsearch.sh $path 14 - 1 filterbank_msok_64ch 1 ${object} 0 256 ${start_ux} ${total_power_threshold} >  msok_ch64.out 2>&1

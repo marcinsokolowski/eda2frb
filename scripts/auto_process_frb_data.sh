@@ -53,6 +53,8 @@ fi
 echo "-------------------------------- auto-processing FRB data --------------------------------"
 date
 count_local=`ls -ald ${local_data_dir}/${templates} 2>&1 |  grep -v "ls: cannot access" | wc -l `
+echo "ls -ald ${local_data_dir}/${templates} | wc -l"
+echo "DEBUG : count_local = $count_local"
 
 if [[ $count_local -gt 0 ]]; then
    cd ${local_data_dir}
@@ -62,15 +64,16 @@ if [[ $count_local -gt 0 ]]; then
       for frb_dir in `ls -d ${templates}/???`
       do
          if [[ -d $frb_dir ]]; then
-            echo "DEBUG : Starting processing data in $frb_dir"
+            object_name=`echo ${frb_dir} | awk '{i=index($1,"_");print substr($1,1,i-1);;}'`
+            echo "DEBUG : Starting processing data in $frb_dir -> object_name = $object_name"
             cd $frb_dir
             ux_start=`date +%s`
             date
             
             if [[ ! -s frb_processing.done ]]; then
                pwd
-               echo "/home/msok/github/eda2frb/scripts/doit_64ch.sh"
-               /home/msok/github/eda2frb/scripts/doit_64ch.sh
+               echo "/home/msok/github/eda2frb/scripts/doit_64ch.sh $object_name"
+               /home/msok/github/eda2frb/scripts/doit_64ch.sh $object_name
             else
                echo "INFO : processing already done in this directory:"
                pwd

@@ -61,6 +61,12 @@ if [[ -n "${10}" && "${10}" != "-" ]]; then
    start_ux=${10}
 fi
 
+total_power_threshold=5
+if [[ -n "${11}" && "${11}" != "-" ]]; then
+   total_power_threshold=${11}
+fi
+
+
 exclude_daytime=0
 
 # use 64 fine channels as the current merge is optimised and hardcoded for this number. Could also be any multiplicity of 64 -> k*64, but 64 is computationally the cheapest option
@@ -92,6 +98,7 @@ echo "start_channel   = $start_channel"
 echo "n_fine_ch       = $n_fine_ch"
 echo "exclude_daytime = $exclude_daytime"
 echo "start_ux        = $start_ux"
+echo "total_power_threshold = $total_power_threshold"
 echo "#############################################"
 
 
@@ -234,8 +241,13 @@ merged_candfile=merged_${fil_to_process}channels_${start_ux}.cand
 merged_candidates=merged_${fil_to_process}channels_${start_ux}.cand_merged
 
 # WARNING : for fredda it may required -s -1 !!!
-echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o -F -S -C ${start_channel}"
-merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o -F -S -C ${start_channel}
+if [[ -s ${merged_filfile} ]]; then
+   echo "INFO : merged file ${merged_filfile} already exists -> no need to run merge_coarse_channels"
+else
+   echo "INFO : merged file ${merged_filfile} does not exist -> running merge_coarse_channels now"
+   echo "merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o -F -S -C ${start_channel}"
+   merge_coarse_channels ${fil_merge_list} ${merged_filfile} -o -F -S -C ${start_channel}
+fi   
 
 # conversion of merged FIL to FITS file:
 echo "dumpfilfile_float ${merged_filfile} ${merged_fitsfile}"
@@ -246,8 +258,8 @@ dumpfilfile_float ${merged_filfile} ${merged_fitsfile}
 # aavs2-server : /home/msok/install/fredda/src/
 # echo "/usr/local/bin//cudafdmt ${merged_filfile} -t 512 -d 2048 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile}"
 # /usr/local/bin//cudafdmt ${merged_filfile} -t 512 -d 2048 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile}
-echo "/usr/local/bin//cudafdmt ${merged_filfile} -t 4096 -d 16384 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile} -A 5 -P 5 -O 50 > fredda_totalpower_4sec.out 2>&1"
-/usr/local/bin//cudafdmt ${merged_filfile} -t 4096 -d 16384 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile} -A 5 -P 5 -O 50 > fredda_totalpower_4sec.out 2>&1
+echo "/usr/local/bin//cudafdmt ${merged_filfile} -t 4096 -d 16384 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile} -A ${total_power_threshold} -P 5 -O 50 > fredda_totalpower_4sec.out 2>&1"
+/usr/local/bin//cudafdmt ${merged_filfile} -t 4096 -d 16384 -S 0 -r 1 -s 1 -m 100 -x 10 -o ${merged_candfile} -A ${total_power_threshold} -P 5 -O 50 > fredda_totalpower_4sec.out 2>&1
 
 path=`which my_friends_of_friends.py`
 # merge candidates 

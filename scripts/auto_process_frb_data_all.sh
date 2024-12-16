@@ -52,8 +52,8 @@ for dir in `ls -d ${dir_template} | tail --lines=${last_n_datasets}`
 do
    if [[ ! -s ${dir}/frb_processing.done ]]; then
       cd $dir
-      echo "auto_process_frb_data.sh - \"${frb_templates}\" $auto_remove"
-      auto_process_frb_data.sh - "${frb_templates}" $auto_remove
+      echo "nohup auto_process_frb_data.sh - \"${frb_templates}\" $auto_remove > auto_process_frb_data.log 2>&1 &"
+      nohup auto_process_frb_data.sh - "${frb_templates}" $auto_remove > auto_process_frb_data.log 2>&1 &
       cd ..
    else
       echo "Directory $dir already processed -> skipped"

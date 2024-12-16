@@ -35,6 +35,11 @@ if [[ -n "$6" && "$6" != "-" ]]; then
    show_ds9=$6
 fi
 
+host=aavs2
+if [[ -n "$7" && "$7" != "-" ]]; then
+   host="$7"
+fi
+
 
 echo "#########################################"
 echo "PARAMETERS:"
@@ -45,25 +50,35 @@ echo "do_plots = $do_plots"
 echo "root_options = $root_options"
 echo "local_dir = ${local_dir}"
 echo "show_ds9 = $show_ds9"
+echo "host = $host"
 echo "#########################################"
 
 
 if [[ $do_copy -gt 0 ]]; then
-   rsync -avP aavs2:${path}/*.cand* .
-   rsync -avP aavs2:${path}/total_power.txt .
-   rsync -avP aavs2:${path}/fredda_totalpower_4sec.out .
-   rsync -avP aavs2:${path}/*.png .
-   rsync -avP aavs2:${path}/candidates_fits .
+   rsync -avP ${host}:${path}/*.png .
+   rsync -avP ${host}:${path}/*.cand* .
 else
-   echo "WARNING : copying results is disabled (2nd parameter <=0 )"   
+   echo "WARNING : copying results is disabled (2nd parameter <=0 )"    
 fi   
-
-# Show png-s from FREDDA:
-gthumb -n *png &
 
 echo "STATISTICS:"
 wc *.cand*
 sleep 10
+
+if [[ $show_ds9 -gt 0 ]]; then
+   # Show png-s from FREDDA:
+   gthumb -n *png &
+fi
+
+if [[ $do_copy -gt 0 ]]; then   
+   rsync -avP ${host}:${path}/total_power.txt .
+   rsync -avP ${host}:${path}/fredda_totalpower_4sec.out .
+   rsync -avP ${host}:${path}/candidates_fits .
+   
+   rsync --exclude '*.fil' --exclude '*.dat' --exclude '*.inf' -avP ${host}:${path}/merged_channels_?????????? .
+else
+   echo "WARNING : copying results is disabled (2nd parameter <=0 )"   
+fi   
 
 if [[ $do_plots -gt 0 ]]; then
    mkdir -p images/
