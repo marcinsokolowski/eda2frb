@@ -15,17 +15,20 @@ do
    dataset=`basename $dir`
    type=`echo $dataset | cut -b 12-14`
    
-   ok=1
+   ok=0
+   pwd
+   echo "DEBUG : ok???"
    if [[ $type == "FRB" ]]; then
       cd FRBs      
+      ok=1
    else 
       if [[ $type == "PSR" ]]; then
          cd PSRs
+         ok=1
       else
          if [[ $type == "RRA" ]]; then
-            cd $RRATs
-         else
-            ok=0
+            cd RRATs
+            ok=1
          fi
       fi
    fi
@@ -39,8 +42,8 @@ do
    else
       echo "ERROR : object type |$type| is not known -> skipped"      
    fi
+   
    pwd
-
    echo "sleep 2"   
    sleep 2
 done

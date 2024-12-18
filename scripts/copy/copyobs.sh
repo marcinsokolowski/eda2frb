@@ -16,5 +16,11 @@ export PATH=~/github/eda2frb/scripts/:~/github/mwafrb/scripts/:/opt/pi/ext/src/r
 subdir=`ssh aavs2 "cd /data/${dataset}/;ls -d ${type}*/256/filterbank_msok_64ch/" | tail -1`
 
 path=`pwd`
+
+if [[ $path == "/home/msok" ]]; then
+   echo "ERROR: path = $path -> exiting now"
+   exit
+fi
+
 echo "/home/msok/github/eda2frb/scripts/auto_copy_frb_data.sh ${dataset} ${subdir} $path 0 2"
 /home/msok/github/eda2frb/scripts/auto_copy_frb_data.sh ${dataset} ${subdir} `pwd` 0 2 
