@@ -22,12 +22,14 @@ do
       cd FRBs      
       ok=1
    else 
-      if [[ $type == "PSR" ]]; then
+      if [[ $type == "PSR" || $type == "pul" ]]; then
          cd PSRs
+         type="J*"
          ok=1
       else
          if [[ $type == "RRA" ]]; then
             cd RRATs
+            type="J*"
             ok=1
          fi
       fi
@@ -35,8 +37,8 @@ do
    
    if [[ $ok -gt 0 ]]; then
       pwd
-      echo "/home/msok/bin/copyobs.sh $dataset \"J*\""
-      /home/msok/bin/copyobs.sh $dataset "J*"
+      echo "/home/msok/bin/copyobs.sh $dataset \"${type}\""
+      /home/msok/bin/copyobs.sh $dataset "${type}"
    
       cd ..
    else
