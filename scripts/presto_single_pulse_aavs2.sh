@@ -48,8 +48,8 @@ else
    rfifind -time 2.0 -o updated_rfiflags.mask updated.fil
 
    # prepsubband :
-   echo "prepsubband updated.fil -o ${outdir}/ -numdms $numdms -nsub 256 -dmstep ${dmstep} -mask updated_rfiflags.mask"
-   prepsubband updated.fil -o ${outdir}/ -numdms $numdms -nsub 256 -dmstep ${dmstep} -mask updated_rfiflags.mask
+   echo "prepsubband updated.fil -o ${outdir}/ -numdms $numdms -nsub 256 -dmstep ${dmstep} -mask updated_rfiflags.mask_rfifind.mask"
+   prepsubband updated.fil -o ${outdir}/ -numdms $numdms -nsub 256 -dmstep ${dmstep} -mask updated_rfiflags.mask_rfifind.mask
 
    # single pulse searches :
    cd ${outdir}/

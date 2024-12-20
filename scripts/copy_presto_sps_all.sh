@@ -30,7 +30,6 @@ fi
 remote_dir="/data/"
 
 pwd
-sleep 5
 
 for dir in `ls -d ${template}`
 do
@@ -47,7 +46,8 @@ do
          date
          echo "Copying PRESTO results in:"
          pwd
-         
+
+         echo "INFO : checking remote directory ${remote_dir}/${dir}/${object}/256/filterbank_msok_64ch/merged_channels_*/ on ${remote_server}"          
          remote_full_path=`ssh ${remote_server} "ls -d ${remote_dir}/${dir}/${object}/256/filterbank_msok_64ch/merged_channels_*/" 2>/dev/null | tail -1 | awk '{print substr($1,1,length($1)-1);}'`          
          echo "INFO : remote_full_path = $remote_full_path"
          
@@ -73,17 +73,21 @@ do
                echo "WARNING : pdf_count = $pdf_count -> nothing to show"
             fi
          
-            cd ../../../
          else
             echo "WARNING : directory ${dir} not found in ${remote_server}:${remote_dir}/"
          fi      
+         cd ../../../
       else
          echo "INFO : ${object}/256/filterbank_msok_64ch - no such directory in $path -> skipped"
       fi      
    done
    cd ..
    
-   echo "sleep 10"
-   sleep 10
+   echo
+   echo
+   echo
+   pwd
+   echo "sleep 4"
+   sleep 4
 
 done
