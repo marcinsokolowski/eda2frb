@@ -66,6 +66,15 @@ if [[ -n "${11}" && "${11}" != "-" ]]; then
    total_power_threshold=${11}
 fi
 
+max_presto_dm=350
+if [[ $observed_object == "FRB20180301" ]]; then
+   echo "OBSERVED OBJECT = FRB20180301 -> setting max_presto_dm = 600"
+   max_presto_dm=600
+fi
+if [[ -n "${12}" && "${12}" != "-" ]]; then
+   max_presto_dm=${12}
+fi
+
 
 exclude_daytime=0
 
@@ -99,6 +108,7 @@ echo "n_fine_ch       = $n_fine_ch"
 echo "exclude_daytime = $exclude_daytime"
 echo "start_ux        = $start_ux"
 echo "total_power_threshold = $total_power_threshold"
+echo "max_presto_dm   = $max_presto_dm"
 echo "#############################################"
 
 
@@ -272,8 +282,22 @@ else
 fi   
 
 if [[ $run_presto -gt 0 ]]; then   
+   # PRESTO folding :
    echo "presto_fold.sh ${merged_filfile} ${observed_object} - - 16 0.00 \"-noxwin\""
    presto_fold.sh ${merged_filfile} ${observed_object} - - 16 0.00 "-noxwin"
+
+   # PRESTO single pulse searches :   
+   b=${merged_filfile%%.fil}
+   cd ${b}
+   echo "~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 10 - $max_presto_dm 1 > sps_10sigma.out 2>&1"
+   ~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 10 - $max_presto_dm 1 > sps_10sigma.out 2>&1
+
+   echo "~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 10 - 250 0.1 > sps_10sigma_maxdm25.out 2>&1"
+   ~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 10 - 250 0.1 > sps_10sigma_maxdm25.out 2>&1
+
+   echo "~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 5 - $max_presto_dm 1 > sps_5sigma.out 2>&1"
+   ~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 5 - $max_presto_dm 1 > sps_5sigma.out 2>&1
+   cd ..
 else
    echo "WARNING : running PRESTO is not required"
 fi
