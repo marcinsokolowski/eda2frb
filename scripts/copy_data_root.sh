@@ -19,22 +19,23 @@ if [[ -n "$1" && "$1" != "-" ]]; then
   dt="$1"
 fi
 
-remote_data_dir=${remote_data_drive}/${dt}/
-
-local_data_dir="/data/${dt}/"
+local_data_drive="/data/"
 if [[ -n "$3" && "$3" != "-" ]]; then
-   local_data_dir="$3"
+   local_data_drive="$3"
 fi
 
+last_n_datasets=10
+if [[ -n "$4" && "$4" != "-" ]]; then
+   last_n_datasets=$4
+fi
 
 echo "#############################################"
 echo "PARAMETERS:"
 echo "#############################################"
 echo "dt = $dt"
-echo "remote_data_drive = $remote_data_drive"
-echo "remote_data_dir   = $remote_data_dir"
-echo "local_data_dir    = $local_data_dir"
+echo "local_data_drive  = $local_data_drive"
 echo "remote_server     = $remote_server"
+echo "last_n_datasets   = $last_n_datasets"
 echo "#############################################"
 
 
@@ -42,29 +43,38 @@ echo "-------------------------------- copy_data_root.sh -----------------------
 
 date
 
-count_remote=`ssh ${remote_server} "ls -ald ${remote_data_dir}/FRB* | wc -l"`
-count_local=`ls -ald ${local_data_dir}/FRB* 2>&1 |  grep -v "ls: cannot access" | wc -l `
-echo "DEBUG : count_remote = $count_remote, count_local = $count_local"
-# if [[ $count_remote -gt 0 && $count_local -le 0 ]]; then
-if [[ -s ${local_data_dir}/copied.txt ]]; then
-   echo "DEBUG : data from ${remote_server}:${remote_data_dir}/FRB* already copied"
-else 
-   echo "Starting copying data at:"
-   date
-   mkdir -p ${local_data_dir}/
-   echo "rsync -avP ${remote_server}:${remote_data_dir}/* ${local_data_dir}/ > ${local_data_dir}/scp.out 2>&1"
-   rsync -avP ${remote_server}:${remote_data_dir}/* ${local_data_dir}/ > ${local_data_dir}/scp.out 2>&1
+for remote_data_dir in `ssh ${remote_server} "ls -d ${remote_data_drive}/${dt} | tail --lines=${last_n_datasets}"`
+do
+   echo "-------------------------------------------------------------------------------------------------------"
+   echo "CHECKING : $remote_data_dir"
    
-   cd ${local_data_dir}/
-   date > copied.txt
-   chown aavs .
-   chgrp aavs .
-   chown aavs * -R
-   chgrp aavs * -R 
-   echo "DEBUG : owner and group changed to aavs user:"
-   ls -al 
+   b=`basename $remote_data_dir`
+   local_data_dir="${local_data_drive}/${b}/"
+   # count_remote=`ssh ${remote_server} "ls -ald ${remote_data_dir}/FRB* | wc -l"`
+   # count_local=`ls -ald ${local_data_dir}/FRB* 2>&1 |  grep -v "ls: cannot access" | wc -l `
+   # echo "DEBUG : count_remote = $count_remote, count_local = $count_local"
+   # if [[ $count_remote -gt 0 && $count_local -le 0 ]]; then
    
-   echo "Finished copying at:"
-   date
-fi
-
+   if [[ -s ${local_data_dir}/copied.txt ]]; then
+      echo "DEBUG : data from ${remote_server}:${remote_data_dir}/FRB* already copied"
+   else 
+      echo "Starting copying data at:"
+      date
+      mkdir -p ${local_data_dir}/
+      echo "rsync -avP ${remote_server}:${remote_data_dir}/* ${local_data_dir}/ > ${local_data_dir}/scp.out 2>&1"
+      rsync -avP ${remote_server}:${remote_data_dir}/* ${local_data_dir}/ > ${local_data_dir}/scp.out 2>&1
+   
+      cd ${local_data_dir}/
+      date > copied.txt
+      chown aavs .
+      chgrp aavs .
+      chown aavs * -R
+      chgrp aavs * -R 
+      echo "DEBUG : owner and group changed to aavs user:"
+      ls -al 
+   
+      echo "Finished copying at:"
+      date
+      cd -
+   fi
+done

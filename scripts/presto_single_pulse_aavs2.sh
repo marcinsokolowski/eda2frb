@@ -44,12 +44,26 @@ else
    mkdir -p ${outdir}
    
    # RFI flagging :
-   echo "rfifind -time 2.0 -o updated_rfiflags.mask updated.fil"
-   rfifind -time 2.0 -o updated_rfiflags.mask updated.fil
+   if [[ -s updated_rfiflags.mask_rfifind.mask ]]; then
+      echo "INFO : file updated_rfiflags.mask_rfifind.mask already exists -> RFI flagging skipped"
+   else
+      echo "rfifind -time 2.0 -o updated_rfiflags.mask updated.fil"
+      rfifind -time 2.0 -o updated_rfiflags.mask updated.fil
+   fi
+
+#   cd ${outdir}
+#   pwd
+#   echo "ln -s ../updated.fil"
+#   ln -s ../updated.fil  
+#   echo "ln -s ../updated_rfiflags.mask_rfifind.mask"
+#   ln -s ../updated_rfiflags.mask_rfifind.mask
 
    # prepsubband :
-   echo "prepsubband updated.fil -o ${outdir}/ -numdms $numdms -nsub 256 -dmstep ${dmstep} -mask updated_rfiflags.mask_rfifind.mask"
-   prepsubband updated.fil -o ${outdir}/ -numdms $numdms -nsub 256 -dmstep ${dmstep} -mask updated_rfiflags.mask_rfifind.mask
+   # WARNING : order of parameters matter, see point 4. in https://github.com/scottransom/presto/issues/33
+   # removed -o ${outdir} -> saving to local dir (see cd ${outdir}/)
+   current_path=`pwd`
+   echo "prepsubband -numdms $numdms -nsub 256 -dmstep ${dmstep} -mask updated_rfiflags.mask_rfifind.mask -o \"${outdir}/\" updated.fil"
+   prepsubband -numdms $numdms -nsub 256 -dmstep ${dmstep} -mask updated_rfiflags.mask_rfifind.mask -o "${outdir}/" updated.fil
 
    # single pulse searches :
    cd ${outdir}/

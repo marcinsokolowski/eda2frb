@@ -76,15 +76,17 @@ fi
 if [[ $do_copy -gt 0 ]]; then   
    echo "rsync -avP ${host}:${path}/total_power.txt ."
    rsync -avP ${host}:${path}/total_power.txt .
-   
+ 
+# 2024-12-24 - not really used/inspected  , needed for plotting total power !!!
    echo "rsync -avP ${host}:${path}/fredda_totalpower_4sec.out ."
    rsync -avP ${host}:${path}/fredda_totalpower_4sec.out .
    
-   echo "rsync -avP ${host}:${path}/candidates_fits ."
-   rsync -avP ${host}:${path}/candidates_fits .
-   
    echo "rsync --exclude '*.fil' --exclude '*.dat' --exclude '*.inf' -avP ${host}:${path}/merged_channels_?????????? ."
    rsync --exclude '*.fil' --exclude '*.dat' --exclude '*.inf' -avP ${host}:${path}/merged_channels_?????????? .
+   
+   echo "rsync -avP ${host}:${path}/candidates_fits ."
+   rsync -avP ${host}:${path}/candidates_fits .
+
 else
    echo "WARNING : copying results is disabled (2nd parameter <=0 )"   
 fi   
@@ -99,9 +101,10 @@ if [[ $do_plots -gt 0 ]]; then
    echo "/home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${candmerged_file} - - \"${root_options}\""
    /home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${candmerged_file} - - "${root_options}"
 
-   cand_file=`ls *.cand | tail -1`
-   echo "/home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${cand_file} - - \"${root_options}\""
-   /home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${cand_file} - - "${root_options}"
+# 2024-12-24 : only overplot merged candidates - takes a lot of time already 
+#   cand_file=`ls *.cand | tail -1`
+#   echo "/home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${cand_file} - - \"${root_options}\""
+#   /home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${cand_file} - - "${root_options}"
 
    # plot total power around merged candidates:
    echo "~/github/mwafrb/scripts/plot_total_power_for_merged.sh - - \"${root_options}\" ${show_ds9}"
