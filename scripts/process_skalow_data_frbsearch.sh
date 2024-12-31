@@ -294,6 +294,11 @@ if [[ $run_presto -gt 0 ]]; then
    size=`ls -ltr presto_sps_thresh10_numdms${max_presto_dm}*/singlepulse_thresh10.pdf | tail -1 | awk '{print $5}'`
    if [[ $size -lt 5000 ]]; then
       echo "ERROR in PRESTO processing -> trying to repeat"
+      
+      mkdir -p OLD
+      echo "mv presto_sps_thresh10_numdms${max_presto_dm}*/ OLD/"
+      mv presto_sps_thresh10_numdms${max_presto_dm}*/ OLD/
+      
       echo "~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 10 - $max_presto_dm 1 > sps_10sigma.out 2>&1"
       ~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 10 - $max_presto_dm 1 > sps_10sigma.out 2>&1 # doubled to try to fix the usual crash 
    fi
@@ -304,6 +309,10 @@ if [[ $run_presto -gt 0 ]]; then
    size=`ls -ltr presto_sps_thresh10_numdms250_*/singlepulse_thresh10.pdf | tail -1 | awk '{print $5}'`
    if [[ $size -lt 5000 ]]; then
       echo "ERROR in PRESTO processing -> trying to repeat"
+      
+      mkdir -p OLD
+      echo "mv presto_sps_thresh10_numdms250_*/ OLD/"
+      mv presto_sps_thresh10_numdms250_*/ OLD/
 
       echo "~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 10 - 250 0.1 > sps_10sigma_maxdm25.out 2>&1"
       ~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 10 - 250 0.1 > sps_10sigma_maxdm25.out 2>&1 # doubled to try to fix the usual crash
@@ -315,6 +324,10 @@ if [[ $run_presto -gt 0 ]]; then
    size=`ls -ltr presto_sps_thresh5_numdms${max_presto_dm}_*/singlepulse_thresh5.pdf | tail -1 | awk '{print $5}'`
    if [[ $size -lt 5000 ]]; then
       echo "ERROR in PRESTO processing -> trying to repeat"
+      
+      mkdir -p OLD
+      echo "mv presto_sps_thresh5_numdms${max_presto_dm}_*/ OLD/"
+      mv presto_sps_thresh5_numdms${max_presto_dm}_*/ OLD/
       
       echo "~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 5 - $max_presto_dm 1 > sps_5sigma.out 2>&1"
       ~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 5 - $max_presto_dm 1 > sps_5sigma.out 2>&1 # doubled to try to fix the usual crash
