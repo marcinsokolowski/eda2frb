@@ -206,8 +206,8 @@ do
          ln -sf ../${dada_file}
          date
          # LATER : skalow_spectrometer_simple_gpu
-         echo "time ~/github/skalow_gpu_spectrometer/build_gpu/skalow_spectrometer_gpu ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a ${scrunch_factor} -P ${p0} -D 2 -A ch${channel_total} -b 1 -x 2"
-         time ~/github/skalow_gpu_spectrometer/build_gpu/skalow_spectrometer_gpu ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a ${scrunch_factor} -P ${p0} -D 2 -A ch${channel_total} -b 1 -x 2
+         echo "time ~/github/skalow_gpu_spectrometer/build_gpu/skalow_spectrometer_gpu ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a ${scrunch_factor} -P ${p0} -D 2 -A ch${channel_total} -b 1 -x 14"
+         time ~/github/skalow_gpu_spectrometer/build_gpu/skalow_spectrometer_gpu ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a ${scrunch_factor} -P ${p0} -D 2 -A ch${channel_total} -b 1 -x 14
          date
                   
          echo "ln -s ch${channel_total}/dynspec_avg${scrunch_factor}_i.fil ${fil_file}"

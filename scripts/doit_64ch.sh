@@ -20,9 +20,28 @@ if [[ -n "$4" && "$4" != "-" ]]; then
    start_channel=$4
 fi
 
+gpu=0
+if [[ -n "$5" && "$5" != "-" ]]; then
+   gpu=$5
+fi
+
 
 export PATH=/home/msok/github/eda2frb/scripts/:/home/msok/github/mwafrb/scripts/:/home/msok/github/mwafrb/src/:$PATH
 
+echo "----------------------------------------------"
+echo "PARAMETERS:"
+echo "----------------------------------------------"
+echo "gpu = $gpu"
+echo "----------------------------------------------"
+
 path=`pwd`
-echo "/home/msok/github/eda2frb/scripts/process_skalow_data_frbsearch.sh $path 14 - 1 filterbank_msok_64ch 1 ${object} 0 ${start_channel} ${start_ux} ${total_power_threshold} >  msok_ch64.out 2>&1"
-/home/msok/github/eda2frb/scripts/process_skalow_data_frbsearch.sh $path 14 - 1 filterbank_msok_64ch 1 ${object} 0 ${start_channel} ${start_ux} ${total_power_threshold} >  msok_ch64.out 2>&1
+
+if [[ $gpu -gt 0 ]]; then
+   echo "INFO : using experimemntal GPU version"
+   echo "/home/msok/github/eda2frb/scripts/process_skalow_data_frbsearch_TEST.sh $path 14 - 1 filterbank_msok_64ch 1 ${object} 0 ${start_channel} ${start_ux} ${total_power_threshold} >  msok_ch64.out 2>&1"
+   /home/msok/github/eda2frb/scripts/process_skalow_data_frbsearch_TEST.sh $path 14 - 1 filterbank_msok_64ch 1 ${object} 0 ${start_channel} ${start_ux} ${total_power_threshold} >  msok_ch64.out 2>&1   
+else
+   echo "INFO : using standard CPU version"
+   echo "/home/msok/github/eda2frb/scripts/process_skalow_data_frbsearch.sh $path 14 - 1 filterbank_msok_64ch 1 ${object} 0 ${start_channel} ${start_ux} ${total_power_threshold} >  msok_ch64.out 2>&1"
+   /home/msok/github/eda2frb/scripts/process_skalow_data_frbsearch.sh $path 14 - 1 filterbank_msok_64ch 1 ${object} 0 ${start_channel} ${start_ux} ${total_power_threshold} >  msok_ch64.out 2>&1
+fi   
