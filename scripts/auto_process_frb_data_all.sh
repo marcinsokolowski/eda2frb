@@ -1,7 +1,8 @@
 #!/bin/bash
 
-export MWA_FRB=/home/msok/github/mwafrb/ 
-export PATH=/home/msok/github/eda2frb/scripts:$MWA_FRB/scripts:$MWA_FRB/src/:$PATH
+# export MWA_FRB=/home/msok/github/mwafrb/ 
+# export PATH=/home/msok/github/eda2frb/scripts:$MWA_FRB/scripts:$MWA_FRB/src/:$PATH
+source /home/msok/github/eda2frb/scripts/env_aavs2_server
 
 #
 #                                                  WARNING - order of paramters below is not-in-order on purpose !!!

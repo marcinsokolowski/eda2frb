@@ -1,0 +1,16 @@
+
+export MWA_FRB=/home/msok/github/mwafrb/ 
+export PATH=/home/msok/github/eda2frb/scripts:$MWA_FRB/scripts:$MWA_FRB/src/:$PATH
+# Pulsar software
+export LD_LIBRARY_PATH=/usr/local/lib:/usr/lib/x86_64-linux-gnu/:$LD_LIBRARY_PATH
+export PYTHONPATH=/usr/local/lib/python3.8/site-packages/:$PYTHONPATH
+export TEMPO=/home/msok/install/tempo/
+export TEMPO2='/usr/share/tempo2/'
+
+# PRESTO:
+export PRESTO=~/github/presto/
+# PRESTO single pulse search:
+alias presto_env='source /home/aavs/msok_python38_env/bin/activate'
+
+
+
