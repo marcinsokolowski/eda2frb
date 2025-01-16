@@ -75,6 +75,15 @@ if [[ -n "${12}" && "${12}" != "-" ]]; then
    max_presto_dm=${12}
 fi
 
+gpu=0
+if [[ -n "${13}" && "${13}" != "-" ]]; then
+   gpu=${13}
+fi
+
+gpu_blocks=14
+if [[ -n "${14}" && "${14}" != "-" ]]; then
+   gpu_blocks=${14}
+fi
 
 exclude_daytime=0
 
@@ -109,6 +118,7 @@ echo "exclude_daytime = $exclude_daytime"
 echo "start_ux        = $start_ux"
 echo "total_power_threshold = $total_power_threshold"
 echo "max_presto_dm   = $max_presto_dm"
+echo "gpu             = $gpu ( -x ${gpu_blocks} )"
 echo "#############################################"
 
 
@@ -205,8 +215,13 @@ do
          echo "ln -sf ../${dada_file}"
          ln -sf ../${dada_file}
          date
-         echo "time skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a ${scrunch_factor} -P ${p0} -D 2 -A ch${channel_total} -b 1"
-         time skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a ${scrunch_factor} -P ${p0} -D 2 -A ch${channel_total} -b 1
+         
+         if [[ $gpu -gt 0 ]]; then
+            echo "time ~/github/skalow_gpu_spectrometer/build_gpu/skalow_spectrometer_simple_gpu ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a ${scrunch_factor} -P ${p0} -D 2 -A ch${channel_total} -b 1 -x ${gpu_blocks}"
+            time ~/github/skalow_gpu_spectrometer/build_gpu/skalow_spectrometer_simple_gpu ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a ${scrunch_factor} -P ${p0} -D 2 -A ch${channel_total} -b 1 -x ${gpu_blocks}
+         else
+            echo "time skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a ${scrunch_factor} -P ${p0} -D 2 -A ch${channel_total} -b 1"
+            time skalow_spectrometer ${dada_file} -f test -p 0 -C 1 -c 0 -s 4096 -Z  -m -1 -F ${channel_total} -N $n_fine_ch -O dynspec -a ${scrunch_factor} -P ${p0} -D 2 -A ch${channel_total} -b 1
          date
                   
          echo "ln -s ch${channel_total}/dynspec_avg${scrunch_factor}_i.fil ${fil_file}"

@@ -40,6 +40,11 @@ if [[ -n "$6" && "$6" != "-" ]]; then
    gpu=$6
 fi
 
+gpu_blocks=14
+if [[ -n "$7" && "$7" != "-" ]]; then
+   gpu_blocks=$7
+fi
+
 echo "#######################################"
 echo "PARAMETERS:"
 echo "#######################################"
@@ -48,7 +53,8 @@ echo "frb_templates   = $frb_templates"
 echo "datadir         = $datadir"
 echo "auto_remove     = $auto_remove"
 echo "last_n_datasets = $last_n_datasets"
-echo "gpu             = $gpu"
+echo "gpu             = $gpu (-x $gpu_blocks)"
+echo "gpu_blocks      = $gpu_blocks"
 echo "#######################################"
 
 cd $datadir
@@ -57,8 +63,8 @@ for dir in `ls -d ${dir_template} | tail --lines=${last_n_datasets}`
 do
    if [[ ! -s ${dir}/frb_processing.done ]]; then
       cd $dir
-      echo "nohup auto_process_frb_data.sh - \"${frb_templates}\" $auto_remove $gpu > auto_process_frb_data.log 2>&1 &"
-      nohup auto_process_frb_data.sh - "${frb_templates}" $auto_remove $gpu > auto_process_frb_data.log 2>&1 &
+      echo "nohup auto_process_frb_data.sh - \"${frb_templates}\" $auto_remove $gpu $gpu_blocks > auto_process_frb_data.log 2>&1 &"
+      nohup auto_process_frb_data.sh - "${frb_templates}" $auto_remove $gpu $gpu_blocks > auto_process_frb_data.log 2>&1 &
       cd ..
    else
       echo "Directory $dir already processed -> skipped"
