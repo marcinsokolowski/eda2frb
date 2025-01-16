@@ -34,6 +34,11 @@ if [[ -n "$3" && "$3" != "-" ]]; then
    auto_remove=$3
 fi
 
+gpu=0
+if [[ -n "$4" && "$4" != "-" ]]; then
+   gpu=$4
+fi
+
 
 echo "############################################"
 echo "PARAMETERS:"
@@ -41,6 +46,7 @@ echo "############################################"
 echo "local_data_dir = $local_data_dir"
 echo "templates      = $templates"
 echo "auto_remove    = $auto_remove"
+echo "gpu            = $gpu"
 echo "############################################"
 
 
@@ -72,8 +78,8 @@ if [[ $count_local -gt 0 ]]; then
             
             if [[ ! -s frb_processing.done ]]; then
                pwd
-               echo "/home/msok/github/eda2frb/scripts/doit_64ch.sh $object_name"
-               /home/msok/github/eda2frb/scripts/doit_64ch.sh $object_name
+               echo "/home/msok/github/eda2frb/scripts/doit_64ch.sh $object_name - - - $gpu"
+               /home/msok/github/eda2frb/scripts/doit_64ch.sh $object_name - - - $gpu
             else
                echo "INFO : processing already done in this directory:"
                pwd
