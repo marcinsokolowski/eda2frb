@@ -74,15 +74,16 @@ if [[ $show_ds9 -gt 0 ]]; then
 fi
 
 if [[ $do_copy -gt 0 ]]; then   
+   # start with PRESTO to have stuff to inspect !!!
+   echo "rsync --exclude '*.fil' --exclude '*.dat' --exclude '*.inf' -avP ${host}:${path}/merged_channels_?????????? ."
+   rsync --exclude '*.fil' --exclude '*.dat' --exclude '*.inf' -avP ${host}:${path}/merged_channels_?????????? .
+
    echo "rsync -avP ${host}:${path}/total_power.txt ."
    rsync -avP ${host}:${path}/total_power.txt .
  
 # 2024-12-24 - not really used/inspected  , needed for plotting total power !!!
    echo "rsync -avP ${host}:${path}/fredda_totalpower_4sec.out ."
    rsync -avP ${host}:${path}/fredda_totalpower_4sec.out .
-   
-   echo "rsync --exclude '*.fil' --exclude '*.dat' --exclude '*.inf' -avP ${host}:${path}/merged_channels_?????????? ."
-   rsync --exclude '*.fil' --exclude '*.dat' --exclude '*.inf' -avP ${host}:${path}/merged_channels_?????????? .
    
    echo "rsync -avP ${host}:${path}/candidates_fits ."
    rsync -avP ${host}:${path}/candidates_fits .
@@ -106,10 +107,6 @@ if [[ $do_plots -gt 0 ]]; then
 #   echo "/home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${cand_file} - - \"${root_options}\""
 #   /home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${cand_file} - - "${root_options}"
 
-   # plot total power around merged candidates:
-   echo "~/github/mwafrb/scripts/plot_total_power_for_merged.sh - - \"${root_options}\" ${show_ds9}"
-   ~/github/mwafrb/scripts/plot_total_power_for_merged.sh - - "${root_options}" ${show_ds9}
-         
    if [[ $show_ds9 -gt 0 ]]; then
       for merged_dir in `ls -d merged_channels*`
       do
@@ -119,6 +116,10 @@ if [[ $do_plots -gt 0 ]]; then
          cd ..
       done      
    fi
+   
+   # plot total power around merged candidates:
+   echo "~/github/mwafrb/scripts/plot_total_power_for_merged.sh - - \"${root_options}\" ${show_ds9}"
+   ~/github/mwafrb/scripts/plot_total_power_for_merged.sh - - "${root_options}" ${show_ds9}
 else
    echo "WARNING : ploting is disabled (3rd parameter <= 0)"
 fi
