@@ -19,5 +19,5 @@ do
 
    # use -cuda 0 when there is GPU     
    echo "dspsr -F1024:D -b1024 -E ${object}.eph -turns 1 -a PSRFITS -minram=256 -B 0.925925926 ${dada_file}"
-#   dspsr -F1024:D -b1024 -E ${object}.eph -turns 1 -O ${outfile} -a PSRFITS -minram=256 -B 0.925925926 ${dada_file}
+   dspsr -F1024:D -b1024 -E ${object}.eph -turns 1 -a PSRFITS -minram=256 -B 0.925925926 ${dada_file}
 done
