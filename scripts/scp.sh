@@ -64,8 +64,16 @@ else
    echo "WARNING : copying results is disabled (2nd parameter <=0 )"    
 fi   
 
+echo
+echo "------------------------------------------------------------------------------"
 echo "STATISTICS:"
 wc *.cand*
+
+echo
+echo "MAX SNR:"
+awk '{if($3>35){print $0;}}' merged_channels_??????????.cand_merged
+echo "------------------------------------------------------------------------------"
+echo
 sleep 10
 
 if [[ $show_ds9 -gt 0 ]]; then
@@ -108,7 +116,8 @@ if [[ $do_plots -gt 0 ]]; then
 #   /home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${cand_file} - - "${root_options}"
 
    if [[ $show_ds9 -gt 0 ]]; then
-      for merged_dir in `ls -d merged_channels*`
+      pwd
+      for merged_dir in `ls -d merged_channels_??????????`
       do
          cd $merged_dir
          echo "acroread prest*/*.pdf &"
@@ -117,9 +126,14 @@ if [[ $do_plots -gt 0 ]]; then
       done      
    fi
    
+   pwd
+   date
+   
    # plot total power around merged candidates:
    echo "~/github/mwafrb/scripts/plot_total_power_for_merged.sh - - \"${root_options}\" ${show_ds9}"
    ~/github/mwafrb/scripts/plot_total_power_for_merged.sh - - "${root_options}" ${show_ds9}
+   
+   echo "THE END"
 else
    echo "WARNING : ploting is disabled (3rd parameter <= 0)"
 fi

@@ -20,7 +20,8 @@ do
    ln -s ../../${dada_file}
 
    # use -cuda 0 when there is GPU     
-   echo "dspsr -F1024:D -b1024 -E ${object}.eph -turns 1 -a PSRFITS -minram=256 -B 0.925925926 ${dada_file}"
-   dspsr -F1024:D -b1024 -E ${object}.eph -turns 1 -a PSRFITS -minram=256 -B 0.925925926 ${dada_file}
+   # -S 3000 -T 2000 - time range 
+   echo "dspsr -F1024:D -b1024 -E ${object}.eph -turns 1 -a PSRFITS -minram=256 -B 0.925925926 -S 3000 -T 2000 ${dada_file}"
+   dspsr -F1024:D -b1024 -E ${object}.eph -turns 1 -a PSRFITS -minram=256 -B 0.925925926 -S 3000 -T 2000 ${dada_file} 
    cd ..
 done

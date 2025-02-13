@@ -315,10 +315,11 @@ def plotting(time_xaxis, total_power_vs_time, pixel_data, new_pixel_data, time_x
     median = sorted_values[int(len(sorted_values)/2)]   
     print("Dedispersed IQR_rms = %.4f, median = %.4f , max = $%.4f" % (IQR_rms,median,max_value))    
     snr = (max_value - median)/IQR_rms
-    print("SNR = %.2f" % (snr))
+    print("SNR = %.2f plt.text at (%.4f,%.4f)" % (snr,arg_max_value,max_value*0.7))
     
     tt=("SNR = %.2f" % (snr))
-    plt.text( arg_max_value, max_value*0.75, tt )
+    y_text = median + (max_value-median)*0.9
+    plt.text( arg_max_value, y_text, tt )
 
     plt.suptitle(f'Candidate:{fits_file}',fontsize=16, y = 0.95, horizontalalignment='center')
     plt.show()

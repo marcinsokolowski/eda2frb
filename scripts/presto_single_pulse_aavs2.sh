@@ -65,17 +65,18 @@ else
    echo "prepsubband -numdms $numdms -nsub 256 -dmstep ${dmstep} -mask updated_rfiflags.mask_rfifind.mask -o \"${outdir}/\" updated.fil"
    prepsubband -numdms $numdms -nsub 256 -dmstep ${dmstep} -mask updated_rfiflags.mask_rfifind.mask -o "${outdir}/" updated.fil
 
+   presto_path=`which single_pulse_search.py`
    # single pulse searches :
    cd ${outdir}/
    for datfile in `ls *.dat`
    do  
-      echo "python ~/github/presto/bin/single_pulse_search.py --threshold=${thresh_sigma} ${datfile}"
-      python ~/github/presto/bin/single_pulse_search.py --threshold=${thresh_sigma} ${datfile}
+      echo "python $presto_path --threshold=${thresh_sigma} ${datfile}"
+      python $presto_path --threshold=${thresh_sigma} ${datfile}
    done
 
    # merging all single pulses to a single plot:
-   echo "python ~/github/presto/bin/single_pulse_search.py _DM*.??*.singlepulse"
-   python ~/github/presto/bin/single_pulse_search.py _DM*.??*.singlepulse
+   echo "python $presto_path _DM*.??*.singlepulse"
+   python $presto_path _DM*.??*.singlepulse
 
    echo "ps2pdf _singlepulse.ps singlepulse_thresh${thresh_sigma}.pdf"
    ps2pdf _singlepulse.ps singlepulse_thresh${thresh_sigma}.pdf
