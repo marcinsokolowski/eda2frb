@@ -304,6 +304,11 @@ if [[ $run_presto -gt 0 ]]; then
    # PRESTO single pulse searches :   
    b=${merged_filfile%%.fil}
    cd ${b}
+   
+   # create header file with all the information (e.g. Observation duration)
+   echo "readfile updated.fil > updated.hdr"
+   readfile updated.fil > updated.hdr
+   
    echo "~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 10 - $max_presto_dm 1 > sps_10sigma.out 2>&1"
    ~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 10 - $max_presto_dm 1 > sps_10sigma.out 2>&1
    size=`ls -ltr presto_sps_thresh10_numdms${max_presto_dm}*/singlepulse_thresh10.pdf | tail -1 | awk '{print $5}'`

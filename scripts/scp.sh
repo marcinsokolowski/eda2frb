@@ -83,8 +83,8 @@ fi
 
 if [[ $do_copy -gt 0 ]]; then   
    # start with PRESTO to have stuff to inspect !!!
-   echo "rsync --exclude '*.fil' --exclude '*.dat' --exclude '*.inf' -avP ${host}:${path}/merged_channels_?????????? ."
-   rsync --exclude '*.fil' --exclude '*.dat' --exclude '*.inf' -avP ${host}:${path}/merged_channels_?????????? .
+   echo "rsync --exclude '*.fil' --exclude '*.dat' --exclude '*.inf' -avPL ${host}:${path}/merged_channels_?????????? ."
+   rsync --exclude '*.fil' --exclude '*.dat' --exclude '*.inf' -avPL ${host}:${path}/merged_channels_?????????? .
 
    echo "rsync -avP ${host}:${path}/total_power.txt ."
    rsync -avP ${host}:${path}/total_power.txt .
