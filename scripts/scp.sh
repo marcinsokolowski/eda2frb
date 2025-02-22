@@ -138,4 +138,15 @@ else
    echo "WARNING : ploting is disabled (3rd parameter <= 0)"
 fi
 
-   
+# assuming we are in directory : 2025_02_20_pulsars_msok/J0534+2200_flagants_ch40_ch256/256/filterbank_msok_64ch
+# need to go down to 2025_02_20_pulsars_msok/
+pwd
+cd ../../../
+pwd
+export PATH=~/github/crab_frb_paper/scripts/calib/:$PATH
+echo "~/github/crab_frb_paper/scripts/calib/process_dataset.sh > analysis_final.out 2>&1"
+~/github/crab_frb_paper/scripts/calib/process_dataset.sh > analysis_final.out 2>&1
+
+echo "All processing done at :"
+date
+
