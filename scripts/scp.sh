@@ -40,6 +40,11 @@ if [[ -n "$7" && "$7" != "-" ]]; then
    host="$7"
 fi
 
+run_crab_analysis=0
+if [[ -n "$8" && "$8" != "-" ]]; then
+   run_crab_analysis=$8
+fi
+
 
 echo "#########################################"
 echo "PARAMETERS:"
@@ -51,6 +56,7 @@ echo "root_options = $root_options"
 echo "local_dir = ${local_dir}"
 echo "show_ds9 = $show_ds9"
 echo "host = $host"
+echo "run_crab_analysis = $run_crab_analysis"
 echo "#########################################"
 
 
@@ -140,13 +146,17 @@ fi
 
 # assuming we are in directory : 2025_02_20_pulsars_msok/J0534+2200_flagants_ch40_ch256/256/filterbank_msok_64ch
 # need to go down to 2025_02_20_pulsars_msok/
-pwd
-cd ../../../
-pwd
-export PATH=~/github/crab_frb_paper/scripts/calib/:$PATH
-echo "~/github/crab_frb_paper/scripts/calib/process_dataset.sh > analysis_final.out 2>&1"
-~/github/crab_frb_paper/scripts/calib/process_dataset.sh > analysis_final.out 2>&1
+if [[ $run_crab_analysis -gt 0 ]]; then
+   pwd
+   cd ../../../
+   pwd
+   export PATH=~/github/crab_frb_paper/scripts/calib/:$PATH
+   echo "~/github/crab_frb_paper/scripts/calib/process_dataset.sh > analysis_final.out 2>&1"
+   ~/github/crab_frb_paper/scripts/calib/process_dataset.sh > analysis_final.out 2>&1
 
-echo "All processing done at :"
-date
+   echo "All processing done at :"
+   date
+else
+   echo "WARNING : running Crab GPs analysis is not requested"
+fi   
 
