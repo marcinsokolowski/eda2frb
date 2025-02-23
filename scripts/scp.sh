@@ -157,6 +157,9 @@ if [[ $run_crab_analysis -gt 0 ]]; then
    echo "All processing done at :"
    date
 else
-   echo "WARNING : running Crab GPs analysis is not requested"
+   echo "WARNING : running Crab GPs analysis is not requested, to do so execute :"
+   echo "export PATH=~/github/crab_frb_paper/scripts/calib/:$PATH"
+   echo "~/github/crab_frb_paper/scripts/calib/process_dataset.sh > analysis_final.out 2>&1"
+   
 fi   
 
