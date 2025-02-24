@@ -40,7 +40,7 @@ if [[ -n "$7" && "$7" != "-" ]]; then
    host="$7"
 fi
 
-run_crab_analysis=0
+run_crab_analysis=`echo $path | awk '{print index($0,"J0534+2200");}'`
 if [[ -n "$8" && "$8" != "-" ]]; then
    run_crab_analysis=$8
 fi
