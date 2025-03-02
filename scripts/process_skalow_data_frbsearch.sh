@@ -352,6 +352,16 @@ if [[ $run_presto -gt 0 ]]; then
       echo "~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 5 - $max_presto_dm 1 > sps_5sigma.out 2>&1"
       ~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 5 - $max_presto_dm 1 > sps_5sigma.out 2>&1 # doubled to try to fix the usual crash
    fi
+
+   # added DM=500 as max above 7 sigma for objects other than CRAB:
+   if [[ $observed_object != "J0534+2200" ]]; then
+      echo "INFO : object other than CRAB -> running DM = 500 search"
+      echo "~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 7 - 500 1 > sps_5sigma_dm500.out 2>&1"
+      ~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 7 - 500 1 > sps_5sigma_dm500.out 2>&1
+   else
+      echo "INFO : no DM=500 PRESTO search for CRAB observations"
+   fi
+   
    cd ..
 else
    echo "WARNING : running PRESTO is not required"

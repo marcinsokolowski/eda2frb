@@ -78,6 +78,7 @@ wc *.cand*
 echo
 echo "MAX SNR:"
 awk '{if($3>35){print $0;}}' merged_channels_??????????.cand_merged
+awk -v maxsnr=-1 '{if($3>maxsnr && $1!="#"){maxsnr=$3;}}END{print "MAX SNR ="maxsnr;}' merged_channels_??????????.cand_merged
 echo "------------------------------------------------------------------------------"
 echo
 sleep 10
