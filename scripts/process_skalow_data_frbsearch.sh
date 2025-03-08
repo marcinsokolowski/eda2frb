@@ -312,54 +312,26 @@ if [[ $run_presto -gt 0 ]]; then
    echo "~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 10 - $max_presto_dm 1 > sps_10sigma.out 2>&1"
    ~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 10 - $max_presto_dm 1 > sps_10sigma.out 2>&1
    size=`ls -ltr presto_sps_thresh10_numdms${max_presto_dm}*/singlepulse_thresh10.pdf | tail -1 | awk '{print $5}'`
-   if [[ $size -lt 5000 ]]; then
-      echo "ERROR in PRESTO processing -> trying to repeat"
-      
-      mkdir -p OLD
-      echo "mv presto_sps_thresh10_numdms${max_presto_dm}*/ OLD/"
-      mv presto_sps_thresh10_numdms${max_presto_dm}*/ OLD/
-      
-      echo "~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 10 - $max_presto_dm 1 > sps_10sigma.out 2>&1"
-      ~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 10 - $max_presto_dm 1 > sps_10sigma.out 2>&1 # doubled to try to fix the usual crash 
-   fi
 
    echo "~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 10 - 250 0.1 > sps_10sigma_maxdm25.out 2>&1"
-   ~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 10 - 250 0.1 > sps_10sigma_maxdm25.out 2>&1
-   
+   ~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 10 - 250 0.1 > sps_10sigma_maxdm25.out 2>&1   
    size=`ls -ltr presto_sps_thresh10_numdms250_*/singlepulse_thresh10.pdf | tail -1 | awk '{print $5}'`
-   if [[ $size -lt 5000 ]]; then
-      echo "ERROR in PRESTO processing -> trying to repeat"
-      
-      mkdir -p OLD
-      echo "mv presto_sps_thresh10_numdms250_*/ OLD/"
-      mv presto_sps_thresh10_numdms250_*/ OLD/
-
-      echo "~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 10 - 250 0.1 > sps_10sigma_maxdm25.out 2>&1"
-      ~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 10 - 250 0.1 > sps_10sigma_maxdm25.out 2>&1 # doubled to try to fix the usual crash
-   fi
 
    echo "~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 5 - $max_presto_dm 1 > sps_5sigma.out 2>&1"
-   ~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 5 - $max_presto_dm 1 > sps_5sigma.out 2>&1
-   
+   ~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 5 - $max_presto_dm 1 > sps_5sigma.out 2>&1   
    size=`ls -ltr presto_sps_thresh5_numdms${max_presto_dm}_*/singlepulse_thresh5.pdf | tail -1 | awk '{print $5}'`
-   if [[ $size -lt 5000 ]]; then
-      echo "ERROR in PRESTO processing -> trying to repeat"
-      
-      mkdir -p OLD
-      echo "mv presto_sps_thresh5_numdms${max_presto_dm}_*/ OLD/"
-      mv presto_sps_thresh5_numdms${max_presto_dm}_*/ OLD/
-      
-      echo "~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 5 - $max_presto_dm 1 > sps_5sigma.out 2>&1"
-      ~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 5 - $max_presto_dm 1 > sps_5sigma.out 2>&1 # doubled to try to fix the usual crash
-   fi
 
    # added DM=500 as max above 7 sigma for objects other than CRAB:
-   if [[ $observed_object != "J0534+2200" ]]; then
+   
+   if [[ $observed_object == "J0534+2200" ]]; then
+      echo "INFO : Crab pulsar running exact DM search:"
+      
+      echo "~/github/eda2frb/scripts/presto_single_pulse_aavs2_CRAB.sh"
+      ~/github/eda2frb/scripts/presto_single_pulse_aavs2_CRAB.sh
+   else
       echo "INFO : object other than CRAB -> running DM = 500 search"
       echo "~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 7 - 500 1 > sps_5sigma_dm500.out 2>&1"
       ~/github/eda2frb/scripts/presto_single_pulse_aavs2.sh 7 - 500 1 > sps_5sigma_dm500.out 2>&1
-   else
-      echo "INFO : no DM=500 PRESTO search for CRAB observations"
    fi
    
    cd ..
