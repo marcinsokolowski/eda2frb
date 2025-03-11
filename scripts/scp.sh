@@ -92,6 +92,17 @@ if [[ $do_copy -gt 0 ]]; then
    # start with PRESTO to have stuff to inspect !!!
    echo "rsync --exclude '*.fil' --exclude '*.dat' --exclude '*.inf' -avPL ${host}:${path}/merged_channels_?????????? ."
    rsync --exclude '*.fil' --exclude '*.dat' --exclude '*.inf' -avPL ${host}:${path}/merged_channels_?????????? .
+   
+   unixtime=`ls -d merged_channels_?????????? | awk '{print substr($1,17,10);}'`
+   if [[ -s ../UNIXTIME.txt ]]; then
+      echo "INFO : file ../UNIXTIME.txt already found:"
+      cat ../UNIXTIME.txt
+   else
+      echo "INFO : file ../UNIXTIME.txt not found -> creating"
+      echo $unixtime > ../UNIXTIME.txt
+      echo "cat ../UNIXTIME.txt"
+      cat ../UNIXTIME.txt
+   fi
 
    echo "rsync -avP ${host}:${path}/total_power.txt ."
    rsync -avP ${host}:${path}/total_power.txt .
