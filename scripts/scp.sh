@@ -93,6 +93,17 @@ if [[ $do_copy -gt 0 ]]; then
    echo "rsync --exclude '*.fil' --exclude '*.dat' --exclude '*.inf' -avPL ${host}:${path}/merged_channels_?????????? ."
    rsync --exclude '*.fil' --exclude '*.dat' --exclude '*.inf' -avPL ${host}:${path}/merged_channels_?????????? .
    
+   if [[ $show_ds9 -gt 0 ]]; then
+      pwd
+      for merged_dir in `ls -d merged_channels_??????????`
+      do
+         cd $merged_dir
+         echo "acroread prest*/*.pdf &"
+         acroread prest*/*.pdf &
+         cd ..
+      done      
+   fi
+   
    unixtime=`ls -d merged_channels_?????????? | awk '{print substr($1,17,10);}'`
    if [[ -s ../UNIXTIME.txt ]]; then
       echo "INFO : file ../UNIXTIME.txt already found:"
@@ -133,16 +144,16 @@ if [[ $do_plots -gt 0 ]]; then
 #   echo "/home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${cand_file} - - \"${root_options}\""
 #   /home/msok/github/mwafrb/scripts/overplot_candidates_and_totalpower.sh ${cand_file} - - "${root_options}"
 
-   if [[ $show_ds9 -gt 0 ]]; then
-      pwd
-      for merged_dir in `ls -d merged_channels_??????????`
-      do
-         cd $merged_dir
-         echo "acroread prest*/*.pdf &"
-         acroread prest*/*.pdf &
-         cd ..
-      done      
-   fi
+#   if [[ $show_ds9 -gt 0 ]]; then
+#      pwd
+#      for merged_dir in `ls -d merged_channels_??????????`
+#      do
+#         cd $merged_dir
+#         echo "acroread prest*/*.pdf &"
+#         acroread prest*/*.pdf &
+#         cd ..
+#      done      
+#   fi
    
    pwd
    date

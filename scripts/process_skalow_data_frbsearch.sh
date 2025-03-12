@@ -146,6 +146,12 @@ if [[ -s frb_processing.done ]]; then
    exit;
 fi
 
+if [[ -d ${filterbank_dir} ]]; then
+   echo "INFO : directory ${filterbank_dir} already exists -> processing is still running or crashed -> check before restarting the script"
+   date
+   exit;
+fi
+
 # check time of acquisition:
 dada_count=`ls channel_0_*.dada 2>/dev/null | wc -l`
 if [[ $dada_count -gt 0 ]]; then
