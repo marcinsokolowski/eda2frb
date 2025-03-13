@@ -1,4 +1,3 @@
-# 2025 ICRAR summer project by Shradha Dhavali
 
 # This code is known as as a RFI and Signal Flagger. Its main purpose is to process a FITS file after the original data has been merged after FREDDA or PRESTO. 
 # The first half of the code takes the FITS file and sums the pixel values along the y-dimension and effectively allows for the total power vs time plot to be generated. 
@@ -302,6 +301,27 @@ def plotting(time_xaxis, total_power_vs_time, pixel_data, new_pixel_data, time_x
     axs[3].title.set_text('Total Power vs Time for De-dispersed FITS File For Signal Flagging')
     axs[3].set_xlabel('Time (ms)')  # Label x-axis only on the last subplot
     axs[3].set_ylabel('Total Power')
+
+    l=len(time_xaxis_signal)
+    max_i = -1
+    max_val = -1
+    for i in range(0,l):
+       if total_power_vs_time_signal[i] > max_val :
+          max_val = total_power_vs_time_signal[i]
+          max_i = i
+
+    low=0
+    up=l
+    if max_i >= 0 :
+       low=max_i - 50
+       up=max_i + 50
+    
+    outtxt="pulse.txt"
+    outf = open( outtxt, "w" )
+    for i in range(low,up):
+       line = ("%.8f %.8f\n" % (time_xaxis_signal[i]-time_xaxis_signal[low],total_power_vs_time_signal[i]))
+       outf.write(line)
+    outf.close()
     
     # calculate SNR of maximum peak in de-dispersed total power:
     sorted_values=np.array(total_power_vs_time_signal)
@@ -315,8 +335,8 @@ def plotting(time_xaxis, total_power_vs_time, pixel_data, new_pixel_data, time_x
     median = sorted_values[int(len(sorted_values)/2)]   
     print("Dedispersed IQR_rms = %.4f, median = %.4f , max = $%.4f" % (IQR_rms,median,max_value))    
     snr = (max_value - median)/IQR_rms
-    print("SNR = %.2f plt.text at (%.4f,%.4f)" % (snr,arg_max_value,max_value*0.7))
     
+    print("SNR = %.2f plt.text at (%.4f,%.4f)" % (snr,arg_max_value,max_value*0.7))    
     tt=("SNR = %.2f" % (snr))
     y_text = median + (max_value-median)*0.9
     plt.text( arg_max_value, y_text, tt )
