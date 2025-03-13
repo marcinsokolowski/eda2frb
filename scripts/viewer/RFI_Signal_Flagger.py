@@ -276,7 +276,7 @@ def is_RFI_signal(rfi_events_spikes, rfi_events_block, signal_event, rfi_block_i
 # Plotting 
 # Plots original FITS file, RFI total power vs time, de-dispersed FITS file, Signal total power vs time. 
 
-def plotting(time_xaxis, total_power_vs_time, pixel_data, new_pixel_data, time_xaxis_signal, total_power_vs_time_signal, rfi_threshold_median_above,rfi_threshold_median_below, median, median_signal, signal_threshold_median_above, signal_threshold_median_below):
+def plotting(time_xaxis, total_power_vs_time, pixel_data, new_pixel_data, time_xaxis_signal, total_power_vs_time_signal, rfi_threshold_median_above,rfi_threshold_median_below, median, median_signal, signal_threshold_median_above, signal_threshold_median_below, outtxt="pulse.txt"):
     fig, axs = plt.subplots(4,1, sharex = True, figsize = (10,20))
     fig.subplots_adjust(hspace = 0.2)
 
@@ -313,10 +313,9 @@ def plotting(time_xaxis, total_power_vs_time, pixel_data, new_pixel_data, time_x
     low=0
     up=l
     if max_i >= 0 :
-       low=max_i - 50
-       up=max_i + 50
+       low=max_i - 30
+       up=max_i + 30
     
-    outtxt="pulse.txt"
     outf = open( outtxt, "w" )
     for i in range(low,up):
        line = ("%.8f %.8f\n" % (time_xaxis_signal[i]-time_xaxis_signal[low],total_power_vs_time_signal[i]))
