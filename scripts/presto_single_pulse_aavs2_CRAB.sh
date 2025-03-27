@@ -10,7 +10,7 @@ if [[ -n "$2" && "$2" != "-" ]]; then
    filfile="$2"
 fi
 
-numdms=100
+numdms=10
 if [[ -n "$3" && "$3" != "-" ]]; then
    numdms=$3
 fi
@@ -20,7 +20,7 @@ if [[ -n "$4" && "$4" != "-" ]]; then
    dmstep=$4
 fi
 
-dmstart=56
+dmstart=56.65
 if [[ -n "$5" && "$5" != "-" ]]; then
    dmstart=$5
 fi
@@ -77,8 +77,8 @@ else
    cd ${outdir}/
    for datfile in `ls *.dat`
    do  
-      echo "python $presto_path --threshold=${thresh_sigma} ${datfile}"
-      python $presto_path --threshold=${thresh_sigma} ${datfile}
+      echo "python $presto_path --threshold=${thresh_sigma} --nobadblocks ${datfile}"
+      python $presto_path --threshold=${thresh_sigma} --nobadblocks ${datfile}
    done
 
    # merging all single pulses to a single plot:

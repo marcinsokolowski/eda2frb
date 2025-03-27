@@ -77,8 +77,8 @@ else
    cd ${outdir}/
    for datfile in `ls *.dat`
    do  
-      echo "python $presto_path --threshold=${thresh_sigma} ${datfile}"
-      python $presto_path --threshold=${thresh_sigma} ${datfile}
+      echo "python $presto_path --threshold=${thresh_sigma} --nobadblocks ${datfile}"
+      python $presto_path --threshold=${thresh_sigma} --nobadblocks ${datfile}
    done
 
    # merging all single pulses to a single plot:

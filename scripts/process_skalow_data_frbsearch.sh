@@ -139,12 +139,12 @@ if [[ $use_digifil -le 0 ]]; then
 fi   
 
 cd ${dada_files_path}
-if [[ -s frb_processing.done ]]; then
-   echo "WARNING : the processing was already performed and finished at:"
-   cat frb_processing.done
-   echo "WARNING : exiting the script now"
-   exit;
-fi
+# if [[ -s frb_processing.done ]]; then
+#   echo "WARNING : the processing was already performed and finished at:"
+#   cat frb_processing.done
+#   echo "WARNING : exiting the script now"
+#   exit;
+# fi
 
 if [[ -d ${filterbank_dir} ]]; then
    echo "INFO : directory ${filterbank_dir} already exists -> processing is still running or crashed -> check before restarting the script"

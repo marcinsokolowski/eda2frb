@@ -85,6 +85,10 @@ if [[ $count_local -gt 0 ]]; then
             
             if [[ ! -s frb_processing.done ]]; then
                pwd
+               
+               # create this file at the start of processing so that it is not processed again:
+               date > frb_processing.done
+               
                echo "/home/msok/github/eda2frb/scripts/doit_64ch.sh $object_name - - - $gpu $gpu_blocks"
                /home/msok/github/eda2frb/scripts/doit_64ch.sh $object_name - - - $gpu $gpu_blocks
             else
