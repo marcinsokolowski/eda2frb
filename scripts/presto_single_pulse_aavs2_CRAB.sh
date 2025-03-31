@@ -50,6 +50,15 @@ if [[ -d ${outdir} ]]; then
 else
    mkdir -p ${outdir}
    
+   if [[ -s updated.fil ]]; then
+      echo "OK : file updated.fil exists"
+   else
+      if [[ -s updated.fil.gz ]]; then
+         echo "gzip -d updated.fil.gz"
+         gzip -d updated.fil.gz
+      fi
+   fi
+   
    # RFI flagging :
    if [[ -s updated_rfiflags.mask_rfifind.mask ]]; then
       echo "INFO : file updated_rfiflags.mask_rfifind.mask already exists -> RFI flagging skipped"

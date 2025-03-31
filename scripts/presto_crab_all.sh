@@ -3,6 +3,9 @@
 export PATH=~/github/eda2frb/scripts:$PATH
 
 template="20??_??_??_pulsars_msok/J0534+2200_flagants_ch40_ch256/256/filterbank_msok_64ch/merged_channels_??????????/"
+if [[ -n "$1" && "$1" != "-" ]]; then
+   template="$1"
+fi
 
 for dir in `ls -d ${template}`
 do
