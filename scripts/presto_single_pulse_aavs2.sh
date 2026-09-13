@@ -25,10 +25,14 @@ if [[ -n "$5" && "$5" != "-" ]]; then
    dmstart=$5
 fi
 
-
 outdir=presto_sps_thresh${thresh_sigma}_numdms${numdms}_dmstep${dmstep}
 if [[ -n "$6" && "$6" != "-" ]]; then
    outdir="$6"
+fi
+
+nsub_bands=256
+if [[ -n "$7" && "$7" != "-" ]]; then
+   nsub_bands=$7
 fi
 
 echo "##########################################"
@@ -39,6 +43,7 @@ echo "dmstart      = $dmstart"
 echo "numdms       = $numdms"
 echo "dmstep       = $dmstep"
 echo "outdir       = $outdir"
+echo "nsub_bands   = $nsub_bands"
 echo "##########################################"
 
 echo "INFO : activating Python environment with PRESTO single pulse search enabled"
@@ -69,8 +74,8 @@ else
    # WARNING : order of parameters matter, see point 4. in https://github.com/scottransom/presto/issues/33
    # removed -o ${outdir} -> saving to local dir (see cd ${outdir}/)
    current_path=`pwd`
-   echo "prepsubband -lodm $dmstart -numdms $numdms -nsub 256 -dmstep ${dmstep} -mask updated_rfiflags.mask_rfifind.mask -o \"${outdir}/\" updated.fil"
-   prepsubband -lodm $dmstart -numdms $numdms -nsub 256 -dmstep ${dmstep} -mask updated_rfiflags.mask_rfifind.mask -o "${outdir}/" updated.fil
+   echo "prepsubband -lodm $dmstart -numdms $numdms -nsub ${nsub_bands} -dmstep ${dmstep} -mask updated_rfiflags.mask_rfifind.mask -o \"${outdir}/\" updated.fil"
+   prepsubband -lodm $dmstart -numdms $numdms -nsub ${nsub_bands} -dmstep ${dmstep} -mask updated_rfiflags.mask_rfifind.mask -o "${outdir}/" updated.fil
 
    presto_path=`which single_pulse_search.py`
    # single pulse searches :
